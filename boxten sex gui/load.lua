@@ -35,6 +35,8 @@ local isfolder = (syn and syn.isfolder) or isfolder
 local makefolder = (syn and syn.makefolder) or makefolder
 
 local folder = "Bоxten Sеx GUI"
+getgenv.BSGUI = {} 
+local env = getgenv.BSGUI
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -133,8 +135,6 @@ end)
 -------------------------------------------------------------------------------------------------------------------------------
 
 -- main & env setup
-getgenv.BSGUI = {} 
-local env = getgenv.BSGUI
 local setupsucc, setuperr = pcall(function() loadstring(game:HttpGet("https://raw.githubusercontent.com/ichorphage/anhedonia/refs/heads/main/boxten%20sex%20gui/setup/init.lua"))() end)
 
 if setuperr then
