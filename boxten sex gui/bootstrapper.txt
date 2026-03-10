@@ -25,5 +25,4 @@ load.lua
 │ └ sounds
 │   ├ call.mp3
 │   ├ the things id do for a whopper with cheese.mp3
-│   └ flashbang.mp3
-finish
+╵   └ flashbang.mp3
