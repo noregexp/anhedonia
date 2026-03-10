@@ -92,6 +92,17 @@ local section = {
   },
 
   { type = "separator", title = "Blacklists" },
+	{ type = "dropdown", title = "Item pick up blacklist", desc = "Blacklists the selected items from being picked up when using \"Pick up all...\" functions.", 
+		options = {"Air Horn", "Bandage", "Bonbon", "Bottle o' Pop", "Box o' Chocolates", 
+			"Chocolate", "Eject Button", "Extraction Speed Candy", "Event Currency", "Gumballs", 
+			"Health Kit", "Jawbreaker", "Jumper Cable", "Pop", "Protein Bar", "Research Capsule", 
+			"Skill Check Candy", "Smoke Bomb", "Speed Candy", "Stealth Candy", "Tape"},
+		multiselect = true,
+
+		callback = function(selected)
+			env.gear.general.itempickupblacklist = selected
+		end 
+	},
   { type = "dropdown", title = "Twisted encounter blacklist", desc = "Blacklists the selected Twisteds from being encountered.", 
 		options = {"Twisted Astro", "Twisted Bassie", "Twisted Blot", "Twisted Bobette", "Twisted Boxten", "Twisted Brightney", "Twisted Brusha",
   		"Twisted Coal", "Twisted Cocoa", "Twisted Connie", "Twisted Cosmo",
