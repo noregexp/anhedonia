@@ -33,13 +33,11 @@ local olderversioninfo = env.essentials.data.cl.older
 local section = {
 	version = version,
 
-	["3"] = {
-		{ type = "separator", title = "Current version" },
-		{ type = "label", title = "Version " .. currentversioninfo.version, desc = "Sub-version: " .. currentversioninfo.subversion .. ". Last updated: " .. currentversioninfo.lastupdated, content = currentversioninfo.changelog },
+  { type = "separator", title = "Current version" },
+  { type = "label", title = "Version " .. currentversioninfo.version, desc = "Sub-version: " .. currentversioninfo.subversion .. ". Last updated: " .. currentversioninfo.lastupdated, content = currentversioninfo.changelog },
 
-		{ type = "separator", title = "Older versions" },
-		{ type = "label", title = "Version " .. olderversioninfo["1.2.9"].version, desc = "Sub-versions: " .. olderversioninfo["1.2.9"].subversions .. ". Final release: " .. olderversioninfo["1.2.9"].finaldate, content = olderversioninfo["1.2.9"].changelog },
-	}
+  { type = "separator", title = "Older versions" },
+  { type = "label", title = "Version " .. olderversioninfo["1.2.9"].version, desc = "Sub-versions: " .. olderversioninfo["1.2.9"].subversions .. ". Final release: " .. olderversioninfo["1.2.9"].finaldate, content = olderversioninfo["1.2.9"].changelog },
 }
 
 -------------------------------------------------------------------------------------------------------------------------------
