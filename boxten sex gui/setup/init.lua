@@ -979,6 +979,12 @@ do
 		return exists
 	end
 
+	function env.funcs.floorloaded() -- returns true if the floor / map has completely loaded
+		if env.setupcomplete then
+			return env.funcs.getgamestat("message"):find("Doors open")
+		end
+	end
+
 	function env.funcs.getstats(type, obj) -- returns a table full of the target objects stats, can fetch the floor, item, machine, twisted, and another players stats
 		if not obj:IsA("Model") then env.funcs.shr("INVALID OBJECT, IDIOT!!!") end
 		local name = obj.Name
