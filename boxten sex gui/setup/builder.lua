@@ -109,7 +109,7 @@ env.funcs.introprogress(76)
 
 local scriptsettingscat = env.funcs.recursivels("setup/script%20sections/script%20settings.lua", true)
 env.funcs.introconsolelog("Script Settings section loaded. (" .. scriptsettingscat.version .. ")")
-if scriptsettingscat.version ~= env.expectedcompiledscriptversions.scriptsettingssecction then
+if scriptsettingscat.version ~= env.expectedcompiledscriptversions.scriptsettingssection then
 	env.funcs.introconsolelog("The script settings section is out of date. (" .. scriptsettingscat.version .. "OoD)", "warn")
 end
 
@@ -117,7 +117,7 @@ env.funcs.introprogress(78)
 
 local uisettingscat = env.funcs.recursivels("setup/script%20sections/ui%20settings.lua", true)
 env.funcs.introconsolelog("UI Settings section loaded. (" .. uisettingscat.version .. ")")
-if uisettingscat.version ~= env.expectedcompiledscriptversions.uisettingssecction then
+if uisettingscat.version ~= env.expectedcompiledscriptversions.uisettingssection then
 	env.funcs.introconsolelog("The UI settings section is out of date. (" .. uisettingscat.version .. "OoD)", "warn")
 end
 
