@@ -60,7 +60,11 @@ env.essentials.toggles, env.essentials.buttons, env.essentials.elements = {}, {}
 env.scriptinfo, env.filemanager = {}, {}
 
 local function yield(this)
-	repeat t() until this()
+	local skip = this()
+
+	if not skip then 
+		repeat t() until this() 
+	end
 end
 
 spwn(function()
