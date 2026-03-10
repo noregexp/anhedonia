@@ -35,12 +35,13 @@ local isfolder = (syn and syn.isfolder) or isfolder
 local makefolder = (syn and syn.makefolder) or makefolder
 
 local folder = "Bоxten Sеx GUI"
-getgenv.BSGUI = {} 
-local env = getgenv.BSGUI
 
 -------------------------------------------------------------------------------------------------------------------------------
 
 -- helpers
+getgenv.BSGUI = {} 
+local env = getgenv.BSGUI
+
 local function yield(this)
 	local skip = this()
 
