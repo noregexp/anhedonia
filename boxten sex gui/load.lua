@@ -40,6 +40,17 @@ local env = getgenv.BSGUI
 
 -------------------------------------------------------------------------------------------------------------------------------
 
+-- helpers
+local function yield(this)
+	local skip = this()
+
+	if not skip then 
+		repeat t() until this() 
+	end
+end
+
+-------------------------------------------------------------------------------------------------------------------------------
+
 -- debugger setup
 local debugger = {}
 debugger.logcount = 0
@@ -68,7 +79,7 @@ local tagformats = {
 }
 
 local function bottomleft(text, log)
-	repeat t() until env.setupcomplete
+	yield(function() return env.setupcomplete end)
 	if not env.gear.general.debugmode then return end
 
 	text = text:gsub("%s*\n%s*", " ")
@@ -142,7 +153,7 @@ if setuperr then
   return
 end
 
-repeat t() until env.setupcomplete and env.essentialsloaded
+yield(function() return env.setupcomplete and env.essentialsloaded end)
 env.funcs.box("setup complete")
 
 env.expectedcompiledscriptversions = {
@@ -522,12 +533,13 @@ local function loadintro()
 	spwn(function()
 		if not env.funcs.exists() then
 			env.funcs.pop("Waiting for character to load in before auto-loading configs...")
-			repeat t() until env.funcs.exists()
+			yield(env.funcs.exists())
 			env.funcs.box("character loaded")
 			t(1)
 		else
 			env.funcs.introconsolelog("Auto-loaded configs.")
 		end
+
 		env.filemanager:autoload()
 		env.funcs.box("auto-loaded configs (if they exist)")
 	end)
