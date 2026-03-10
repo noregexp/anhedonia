@@ -39,6 +39,17 @@ local mobile = uis.TouchEnabled
 
 -------------------------------------------------------------------------------------------------------------------------------
 
+-- helpers
+local function yield(this)
+	local skip = this()
+
+	if not skip then 
+		repeat t() until this() 
+	end
+end
+
+-------------------------------------------------------------------------------------------------------------------------------
+
 local autoescapewormconn
 local autoescapewormdelay = 0.1
 local function autoescape(state)
@@ -479,10 +490,6 @@ function autocalibration2(state)
 end
 
 -------------------------------------------------------------------------------------------------------------------------------
-
-local function yield(this)
-	repeat t() until this()
-end
 
 local autoteleporttomachineconditions = {"Extraction start"}
 local autoteleportingtomachineconn
