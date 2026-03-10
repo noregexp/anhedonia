@@ -1131,10 +1131,11 @@ env.stuf.afe = {
 }
 
 local function autofarm(state)
-	env.stuf.afe.running = state
-
 	if state then
+		yield(function() return env.funcs.exists() end)
 		if env.stuf.afe.running then return end
+		env.stuf.afe.running = true
+
 		env.funcs.box("autofarm started")
 		env.essentials.library.update("Auto teleport to elevator", true)
 		env.essentials.library.update("Auto teleport to elevator condition", {"Instant"})
@@ -1234,6 +1235,7 @@ local function autofarm(state)
 
 	else
 		env.funcs.box("autofarm stopped")
+		env.stuf.afe.running = false
 
 		if env.stuf.afe.tploopthread then
 			task.cancel(env.stuf.afe.tploopthread)
