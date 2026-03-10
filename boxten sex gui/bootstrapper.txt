@@ -15,12 +15,16 @@ load.lua
 │     ├ automation.lua
 │     ├ animations.lua
 │     ├ fun.lua
-│     └ donor.lua
+│     ├ donor.lua
+│     ├ script settings.lua
+│     ├ ui settings.lua
+│     └ changelogs.lua
 └ assets
   ├ videos
   │ └ dandelions forever.mp4
   ├ images
   │ ├ ive made a severe and continuous lapse in my judgement.png
+  │ ├ daschund.png
   │ └ heterochromia.png
   └ sounds
     ├ call.mp3
