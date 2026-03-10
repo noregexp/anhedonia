@@ -160,7 +160,10 @@ env.expectedcompiledscriptversions = {
 	funsection = 2,
 	donorsection = 2,
 
-	scriptinformationandchangelogssections = 2,
+	scriptsettingssection = 2,
+  uisettingssection = 2,
+  changelogssection = 2,
+
 	configloadingsection = 2
 }
 
