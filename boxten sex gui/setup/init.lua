@@ -444,6 +444,7 @@ do
 		forcequitwhenteleportingtomach = false,
 
 		-- blacklists
+		itempickupblacklist = {},
 		encountertwistedblacklist = {},
 
 		-- ui settings
