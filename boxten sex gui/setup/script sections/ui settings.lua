@@ -24,7 +24,6 @@ local FindFirstChildOfClass = getins(game, "FindFirstChildOfClass")
 local ts = FindFirstChildOfClass(game, "TweenService")
 
 local getgenv = getgenv() or _G
-local queueotp = (syn and syn.queue_on_teleport) or queue_on_teleport or (fluxus and fluxus.queue_on_teleport)
 
 local folder = "Bоxten Sеx GUI"
 local env = getgenv.BSGUI
@@ -33,21 +32,7 @@ local olderversioninfo = env.essentials.data.cl.older
 
 -------------------------------------------------------------------------------------------------------------------------------
 
-queueconn = nil
-function queuescript(state)
-	if not queueotp then return end
-	if state then
-		queueconn = env.stuf.plr.OnTeleport:Connect(function()
-			queueotp("")
-		end)
-	else
-		if queueconn then queueconn:Disconnect() queueconn = nil end
-	end
-end
-
--------------------------------------------------------------------------------------------------------------------------------
-
-local sections = {
+local section = {
 	version = version,
 
 		{ type = "separator", title = "Scaling" },
@@ -103,6 +88,6 @@ local sections = {
 
 -------------------------------------------------------------------------------------------------------------------------------
 
-return sections
+return section
 
 -------------------------------------------------------------------------------------------------------------------------------
