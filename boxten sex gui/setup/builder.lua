@@ -110,7 +110,7 @@ env.funcs.introprogress(76)
 local scriptsettingscat = env.funcs.recursivels("setup/script%20sections/script%20settings.lua", true)
 env.funcs.introconsolelog("Script Settings section loaded. (" .. scriptsettingscat.version .. ")")
 if scriptsettingscat.version ~= env.expectedcompiledscriptversions.scriptsettingssection then
-	env.funcs.introconsolelog("The script settings section is out of date. (" .. scriptsettingscat.version .. "OoD)", "warn")
+	env.funcs.introconsolelog("The \"Script Settings\" section is out of date. (" .. scriptsettingscat.version .. "OoD)", "warn")
 end
 
 env.funcs.introprogress(78)
@@ -118,7 +118,7 @@ env.funcs.introprogress(78)
 local uisettingscat = env.funcs.recursivels("setup/script%20sections/ui%20settings.lua", true)
 env.funcs.introconsolelog("UI Settings section loaded. (" .. uisettingscat.version .. ")")
 if uisettingscat.version ~= env.expectedcompiledscriptversions.uisettingssection then
-	env.funcs.introconsolelog("The UI settings section is out of date. (" .. uisettingscat.version .. "OoD)", "warn")
+	env.funcs.introconsolelog("The \"UI Settings\" section is out of date. (" .. uisettingscat.version .. "OoD)", "warn")
 end
 
 env.funcs.introprogress(80)
@@ -126,15 +126,15 @@ env.funcs.introprogress(80)
 local changelogscat = env.funcs.recursivels("setup/script%20sections/ui%20settings.lua", true)
 env.funcs.introconsolelog("Changelogs section loaded. (" .. changelogscat.version .. ")")
 if changelogscat.version ~= env.expectedcompiledscriptversions.changelogssection then
-	env.funcs.introconsolelog("The UI settings section is out of date. (" .. changelogscat.version .. "OoD)", "warn")
+	env.funcs.introconsolelog("The \"Changelogs\" section is out of date. (" .. changelogscat.version .. "OoD)", "warn")
 end
 
 env.funcs.introprogress(82)
 
 local clcat = env.funcs.recursivels("setup/script%20sections/config%20loading.lua", true)
-env.funcs.introconsolelog("Config loading sections loaded. (" .. clcat.version .. ")")
+env.funcs.introconsolelog("Config loading section loaded. (" .. clcat.version .. ")")
 if clcat.version ~= env.expectedcompiledscriptversions.configloadingsection then
-	env.funcs.introconsolelog("The config loading section is out of date. (" .. clcat.version .. "OoD)", "warn")
+	env.funcs.introconsolelog("The \"Config Loading\" section is out of date. (" .. clcat.version .. "OoD)", "warn")
 end
 
 env.funcs.introprogress(84)
