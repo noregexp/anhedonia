@@ -543,7 +543,7 @@ local function autoteleporttomachine(state)
 		local conn = env.stuf.roomfolder.ChildAdded:Connect(function()
 			yield(function() return env.funcs.floorloaded() end)
 			yield(function() return not env.stuf.actionqueuerunning end)
-			t(0.1) doteleport()
+			doteleport()
 		end)
 		table.insert(autoteleporttomachineconns, conn)
 	end
@@ -1056,7 +1056,7 @@ local function hookaction(action)
 	if table.find(performactionstriggers, "Map fully loaded") then
 		table.insert(action.conns, env.stuf.roomfolder.ChildAdded:Connect(function()
 			yield(function() env.funcs.floorloaded() end)
-			t(0.1) try()
+			try()
 		end))
 	end
 
@@ -1175,7 +1175,7 @@ local function autofarm(state)
 			while env.stuf.afe.running do
 				if not tplooppause then
 					if not env.stuf.actionqueuerunning then
-						if not game.Workspace.Info.Panic.Value then
+						if not env.funcs.getgamestat("panicmode") then
 							if env.funcs.getgamestat("flooractive") then
 								if not env.funcs.getstats("player", env.stuf.char).extracting then
 									env.funcs.tomachine("tp")
