@@ -973,7 +973,7 @@ do
 		if env.stuf.gamemap then return env.stuf.gamemap else env.funcs.pop("Room not found.") return nil end
 	end
 
-	function env.funcs.exists(plr, yield) -- checks if the player exists in the player folder (ingame and not ingame), returns true or false
+	function env.funcs.exists(plr) -- checks if the player exists in the player folder (ingame and not ingame), returns true or false
 		local exists, aim = nil, (plr and plr.Name) or env.stuf.user
 		exists = env.stuf.plrfolder:FindFirstChild(aim) 
 
