@@ -1055,7 +1055,6 @@ local function hookaction(action)
 
 	if table.find(performactionstriggers, "Map fully loaded") then
 		table.insert(action.conns, env.stuf.roomfolder.ChildAdded:Connect(function()
-			env.funcs.box("running auto actions from \"Map fully loaded\" trigger")
 			yield(function() env.funcs.floorloaded() end)
 			t(0.1) try()
 		end))
@@ -1064,7 +1063,6 @@ local function hookaction(action)
 	if table.find(performactionstriggers, "On floor start") then
 		table.insert(action.conns, env.stuf.gameinfo.FloorActive.Changed:Connect(function(val)
 			if val then 
-				env.funcs.box("running auto actions from \"On floor start\" trigger")
 				try() 
 			end
 		end))
@@ -1073,13 +1071,10 @@ local function hookaction(action)
 	if table.find(performactionstriggers, "On panic mode") then
 		table.insert(action.conns, env.stuf.gameinfo.Panic.Changed:Connect(function(val)
 			if val then 
-				env.funcs.box("running auto actions from \"On panic mode\" trigger")
 				try() 
 			end
 		end))
 	end
-
-	env.funcs.box("auto actions queue finished")
 end
 
 local function maketoggles()
@@ -1178,8 +1173,26 @@ local function autofarm(state)
 		env.funcs.box("machine teleport loop started")
 
 			while env.stuf.afe.running do
-				if not tplooppause and not env.stuf.actionqueuerunning and not env.funcs.getgamestat("panicmode") and env.funcs.getgamestat("flooractive") and not env.funcs.getstats("player", env.stuf.char).extracting then
-					env.funcs.tomachine("tp")
+				if not tplooppause then
+					if not env.stuf.actionqueuerunning then
+						if not env.funcs.getgamestat("panicmode") then
+							if env.funcs.getgamestat("flooractive") then
+								if not env.funcs.getstats("player", env.stuf.char).extracting then
+									env.funcs.tomachine("tp")
+								else
+									env.funcs.pop("Player is extracting, cannot teleport to machine.")
+								end
+							else
+								env.funcs.pop("\"FloorActive\" game stat is not true, cannot teleport to machine.")
+							end
+						else
+							env.funcs.pop("Panic mode is on, cannot teleport to machine.")
+						end
+					else
+						env.funcs.pop("Auto action queue is still running, cannot teleport to machine.")
+					end
+				else
+					env.funcs.pop("Teleport loop is paused, cannot teleport to machine.")
 				end
 				t(3)
 			end
@@ -1188,7 +1201,7 @@ local function autofarm(state)
 		local function onspotted()
 			t()
 			if env.stuf.actionqueuerunning then 
-				env.funcs.pop("Player is in danger, but the autofarm actions are still running!")
+				env.funcs.pop("Player is in danger, but the auto action queue hasn't finished!")
 				return 
 			end
 
