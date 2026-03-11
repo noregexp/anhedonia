@@ -523,7 +523,7 @@ local function loadintro()
 		env.funcs.introconsolelog("Something went wrong. (BuildFail)", "warn")
 	else
 		env.funcs.introconsolelog("Success: Script sections loaded", "succ")
-		if buildversion ~= buildversion env.expectedcompiledscriptversions.builder then
+		if buildversion ~= env.expectedcompiledscriptversions.builder then
 			env.funcs.introconsolelog("The script builder is out of date. (" .. buildversion .. " ≠ " .. env.expectedcompiledscriptversions.builder .. ")", "warn")
 		end
 	end
