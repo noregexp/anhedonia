@@ -128,7 +128,7 @@ end
 
 env.funcs.introprogress(80)
 
-local changelogscat = env.funcs.recursivels("setup/script%20sections/ui%20settings.lua", true)
+local changelogscat = env.funcs.recursivels("setup/script%20sections/changelogs.lua", true)
 env.funcs.introconsolelog("Changelogs section loaded. (" .. changelogscat.version .. ")")
 if changelogscat.version ~= env.expectedcompiledscriptversions.changelogssection then
 	env.funcs.introconsolelog("The \"Changelogs\" section is out of date. (" .. changelogscat.version .. "OoD)", "warn")
