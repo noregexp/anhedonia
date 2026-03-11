@@ -1055,6 +1055,7 @@ local function hookaction(action)
 
 	if table.find(performactionstriggers, "Map fully loaded") then
 		table.insert(action.conns, env.stuf.roomfolder.ChildAdded:Connect(function()
+			env.funcs.box("running auto actions from \"Map fully loaded\" trigger")
 			yield(function() env.funcs.floorloaded() end)
 			t(0.1) try()
 		end))
@@ -1062,15 +1063,23 @@ local function hookaction(action)
 
 	if table.find(performactionstriggers, "On floor start") then
 		table.insert(action.conns, env.stuf.gameinfo.FloorActive.Changed:Connect(function(val)
-			if val then try() end
+			if val then 
+				env.funcs.box("running auto actions from \"On floor start\" trigger")
+				try() 
+			end
 		end))
 	end
 
 	if table.find(performactionstriggers, "On panic mode") then
 		table.insert(action.conns, env.stuf.gameinfo.Panic.Changed:Connect(function(val)
-			if val then try() end
+			if val then 
+				env.funcs.box("running auto actions from \"On panic mode\" trigger")
+				try() 
+			end
 		end))
 	end
+
+	env.funcs.box("auto actions queue finished")
 end
 
 local function maketoggles()
@@ -1081,11 +1090,12 @@ local function maketoggles()
 		end
 	end
 end
+
 maketoggles()
 
 local function autopickupallitems(state) autoactions.autopickupallitems.enabled = state hookaction(autoactions.autopickupallitems) end
-local function autopickupallcapsules(state)autoactions.autopickupallcapsules.enabled = state hookaction(autoactions.autopickupallcapsules) end
-local function autopickupalltapes(state)autoactions.autopickupalltapes.enabled = state hookaction(autoactions.autopickupalltapes) end
+local function autopickupallcapsules(state) autoactions.autopickupallcapsules.enabled = state hookaction(autoactions.autopickupallcapsules) end
+local function autopickupalltapes(state) autoactions.autopickupalltapes.enabled = state hookaction(autoactions.autopickupalltapes) end
 local function autopickupallheals(state) autoactions.autopickupallheals.enabled = state hookaction(autoactions.autopickupallheals) end
 local function autopickupallextitems(state) autoactions.autopickupallextitems.enabled = state hookaction(autoactions.autopickupallextitems) end
 local function autopickupalleventitems(state) autoactions.autopickupalleventitems.enabled = state hookaction(autoactions.autopickupalleventitems) end
@@ -1168,7 +1178,7 @@ local function autofarm(state)
 		env.funcs.box("machine teleport loop started")
 
 			while env.stuf.afe.running do
-				if not tplooppause and not env.stuf.actionqueuerunning and not env.funcs.getgamestat("panicmode") and not env.funcs.getgamestat("flooractive") and not env.funcs.getstats("player", env.stuf.char).extracting then
+				if not tplooppause and not env.stuf.actionqueuerunning and not env.funcs.getgamestat("panicmode") and env.funcs.getgamestat("flooractive") and not env.funcs.getstats("player", env.stuf.char).extracting then
 					env.funcs.tomachine("tp")
 				end
 				t(3)
