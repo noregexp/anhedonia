@@ -541,7 +541,7 @@ local function autoteleporttomachine(state)
 
 	if table.find(conditions, "Map fully loaded") then
 		local conn = env.stuf.roomfolder.ChildAdded:Connect(function()
-			yield(env.funcs.floorloaded())
+			yield(function() return env.funcs.floorloaded() end)
 			yield(function() return not env.stuf.actionqueuerunning end)
 			doteleport()
 		end)
@@ -1055,7 +1055,7 @@ local function hookaction(action)
 
 	if table.find(performactionstriggers, "Map fully loaded") then
 		table.insert(action.conns, env.stuf.roomfolder.ChildAdded:Connect(function()
-			yield(env.funcs.floorloaded())
+			yield(function() env.funcs.floorloaded() end)
 			try()
 		end))
 	end
