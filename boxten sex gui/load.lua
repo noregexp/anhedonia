@@ -535,7 +535,7 @@ local function loadintro()
 	spwn(function()
 		if not env.funcs.exists() then
 			env.funcs.pop("Waiting for character to load in before auto-loading configs...")
-			yield(env.funcs.exists())
+			yield(function() return env.funcs.exists() end)
 			env.funcs.box("character loaded")
 			t(1)
 		else
