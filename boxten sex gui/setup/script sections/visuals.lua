@@ -644,7 +644,7 @@ function toggleborders(state)
 	if state then
 		if env.stuf.currentroom then removeborders() end
 
-		noclipfactiveconn = env.funcs.getgamestat("flooractive").Changed:Connect(function(active)
+		noclipfactiveconn = env.funcs.getgamestats().flooractive.Changed:Connect(function(active)
 			if active then
 				removeborders()
 			end
