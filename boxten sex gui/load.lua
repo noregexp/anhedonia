@@ -517,14 +517,14 @@ local function loadintro()
 	env.funcs.introconsolelog("Constructing UI...", "state")
 	t(0.1) env.funcs.introprogress(60)
 
-	local buildsucc, buildversion = env.funcs.recursivels("setup/builder.lua", true)
+	local buildsucc = env.funcs.recursivels("setup/builder.lua", true)
 
 	if not buildsucc or not env.stuf.sectionsloaded then
 		env.funcs.introconsolelog("Something went wrong. (BuildFail)", "warn")
 	else
 		env.funcs.introconsolelog("Success: Script sections loaded", "succ")
-		if buildversion ~= env.expectedcompiledscriptversions.builder then
-			env.funcs.introconsolelog("The script builder is out of date. (" .. buildversion .. " ≠ " .. env.expectedcompiledscriptversions.builder .. ")", "warn")
+		if buildsucc.version ~= env.expectedcompiledscriptversions.builder then
+			env.funcs.introconsolelog("The script builder is out of date. (" .. buildsucc.version .. " ≠ " .. env.expectedcompiledscriptversions.builder .. ")", "warn")
 		end
 	end
 
