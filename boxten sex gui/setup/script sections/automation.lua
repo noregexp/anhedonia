@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 3
+local version = 4
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -1045,7 +1045,6 @@ end
 local function hookaction(action)
 	for _, conn in ipairs(action.conns) do conn:Disconnect() end
 	action.conns = {}
-
 	if not action.enabled then return end
 
 	local function try()
@@ -1055,24 +1054,24 @@ local function hookaction(action)
 
 	if table.find(performactionstriggers, "Map fully loaded") then
 		table.insert(action.conns, env.stuf.roomfolder.ChildAdded:Connect(function()
-			yield(function() env.funcs.floorloaded() end)
-			try()
+			spwn(function()
+				local ok = yield(function() return env.funcs.floorloaded() end)
+				if ok then
+					try()
+				end
+			end)
 		end))
 	end
 
 	if table.find(performactionstriggers, "On floor start") then
 		table.insert(action.conns, env.stuf.gameinfo.FloorActive.Changed:Connect(function(val)
-			if val then 
-				try() 
-			end
+			if val then try() end
 		end))
 	end
 
 	if table.find(performactionstriggers, "On panic mode") then
 		table.insert(action.conns, env.stuf.gameinfo.Panic.Changed:Connect(function(val)
-			if val then 
-				try() 
-			end
+			if val then try() end
 		end))
 	end
 end
