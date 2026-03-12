@@ -171,7 +171,7 @@ env.expectedcompiledscriptversions = {
 
 	scriptsettingssection = 3,
 	uisettingssection = 3,
-	changelogssection = 3,
+	changelogssection = 4,
 
 	configloadingsection = 3
 }
