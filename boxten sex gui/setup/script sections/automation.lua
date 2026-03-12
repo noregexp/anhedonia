@@ -961,7 +961,7 @@ local function autobassiebone(state)
 end
 
 local function dobassieboneonce()
-	if bassieboneconn then return end
+	if bassieboneconn or not env.stuf.items then return end
 	bassieboneconn = env.stuf.items.ChildAdded:Connect(fireprompts)
 	bassiebone()
 
