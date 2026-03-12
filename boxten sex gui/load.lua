@@ -42,6 +42,27 @@ local folder = "Bоxten Sеx GUI"
 getgenv.BSGUI = {} 
 local env = getgenv.BSGUI
 
+env.expectedcompiledscriptversions = {
+	library = 3,
+	data = 3,
+	builder = 3,
+
+	mainsection = 3,
+	navigationsection = 3,
+	visualssection = 3,
+	localplayersection = 3,
+	automationsection = 5,
+	animationssection = 3,
+	funsection = 3,
+	donorsection = 3,
+
+	scriptsettingssection = 3,
+	uisettingssection = 3,
+	changelogssection = 4,
+
+	configloadingsection = 3
+}
+
 local function yield(this)
 	repeat t() until this() 
 end
@@ -154,27 +175,6 @@ end
 
 yield(function() return env.setupcomplete and env.essentialsloaded end)
 env.funcs.box("setup complete")
-
-env.expectedcompiledscriptversions = {
-	library = 3,
-	data = 3,
-	builder = 3,
-
-	mainsection = 3,
-	navigationsection = 3,
-	visualssection = 3,
-	localplayersection = 3,
-	automationsection = 4,
-	animationssection = 3,
-	funsection = 3,
-	donorsection = 3,
-
-	scriptsettingssection = 3,
-	uisettingssection = 3,
-	changelogssection = 4,
-
-	configloadingsection = 3
-}
 
 -------------------------------------------------------------------------------------------------------------------------------
 
