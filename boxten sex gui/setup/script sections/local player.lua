@@ -1011,9 +1011,9 @@ function env.funcs.pickupallitems()
 						local itemCFrame = item:GetPivot() * CFrame.new(0, env.gear.general.itemtpposyoffset, 0)
 						for _ = 1, 15 do 
 							env.funcs.moveplr(itemCFrame, "tp") 
-							local prompt = env.funcs.getstats("item", item).act
+							local prompt = env.funcs.getstats("item", item).prox
 							if prompt then
-								fireproximityprompt(env.funcs.getstats("item", item).act)
+								fireproximityprompt(env.funcs.getstats("item", item).prox)
 							end
 							t() 
 						end
@@ -1039,9 +1039,9 @@ function env.funcs.pickupallcapsules()
 					local itemCFrame = item:GetPivot() * CFrame.new(0, env.gear.general.itemtpposyoffset, 0)
 					for _ = 1, 15 do 
 						env.funcs.moveplr(itemCFrame, "tp") 
-						local prompt = env.funcs.getstats("item", item).act
+						local prompt = env.funcs.getstats("item", item).prox
 						if prompt then
-							fireproximityprompt(env.funcs.getstats("item", item).act)
+							fireproximityprompt(env.funcs.getstats("item", item).prox)
 						end
 						t() 
 					end
@@ -1066,9 +1066,9 @@ function env.funcs.pickupalltapes()
 					local itemCFrame = item:GetPivot() * CFrame.new(0, env.gear.general.itemtpposyoffset, 0)
 					for _ = 1, 15 do 
 						env.funcs.moveplr(itemCFrame, "tp") 
-						local prompt = env.funcs.getstats("item", item).act
+						local prompt = env.funcs.getstats("item", item).prox
 						if prompt then
-							fireproximityprompt(env.funcs.getstats("item", item).act)
+							fireproximityprompt(env.funcs.getstats("item", item).prox)
 						end
 						t() 
 					end
@@ -1093,9 +1093,9 @@ function env.funcs.pickupallheals()
 					local itemCFrame = item:GetPivot() * CFrame.new(0, env.gear.general.itemtpposyoffset, 0)
 					for _ = 1, 15 do 
 						env.funcs.moveplr(itemCFrame, "tp") 
-						local prompt = env.funcs.getstats("item", item).act
+						local prompt = env.funcs.getstats("item", item).prox
 						if prompt then
-							fireproximityprompt(env.funcs.getstats("item", item).act)
+							fireproximityprompt(env.funcs.getstats("item", item).prox)
 						end
 						t() 
 					end
@@ -1120,9 +1120,9 @@ function env.funcs.pickupallextitems()
 					local itemCFrame = item:GetPivot() * CFrame.new(0, env.gear.general.itemtpposyoffset, 0)
 					for _ = 1, 15 do 
 						env.funcs.moveplr(itemCFrame, "tp") 
-						local prompt = env.funcs.getstats("item", item).act
+						local prompt = env.funcs.getstats("item", item).prox
 						if prompt then
-							fireproximityprompt(env.funcs.getstats("item", item).act)
+							fireproximityprompt(env.funcs.getstats("item", item).prox)
 						end
 						t() 
 					end
@@ -1147,9 +1147,9 @@ function env.funcs.pickupalleventitems()
 					local itemCFrame = item:GetPivot() * CFrame.new(0, env.gear.general.itemtpposyoffset, 0)
 					for _ = 1, 15 do 
 						env.funcs.moveplr(itemCFrame, "tp") 
-						local prompt = env.funcs.getstats("item", item).act
+						local prompt = env.funcs.getstats("item", item).prox
 						if prompt then
-							fireproximityprompt(env.funcs.getstats("item", item).act)
+							fireproximityprompt(env.funcs.getstats("item", item).prox)
 						end
 						t() 
 					end
