@@ -681,7 +681,7 @@ do
 						env.funcs.pop("The room doesn't exist yet!")
 						return
 					else
-						if not env.funcs.roomcomplete() then
+						if not env.stuf.currentroom:FindFirstChild("FreeArea") then
 							if env.stuf.refconn then env.stuf.refconn:Disconnect() env.stuf.refconn = nil end
 							if env.stuf.refconn2 then env.stuf.refconn2:Disconnect() env.stuf.refconn2 = nil end
 							env.funcs.pop("The room seems to be incomplete!")
