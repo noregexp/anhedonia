@@ -50,6 +50,13 @@ local env = getgenv.BSGUI
 
 -------------------------------------------------------------------------------------------------------------------------------
 
+-- helpers
+local function yield(this)
+	repeat t() until this() 
+end
+
+-------------------------------------------------------------------------------------------------------------------------------
+
 -- env setup
 env.essentialsloaded, env.setupcomplete = nil
 env.funcs, env.stuf, env.gear, env.essentials = {}, {}, {}, {}
@@ -59,10 +66,9 @@ env.essentials.toggles, env.essentials.buttons, env.essentials.elements = {}, {}
 
 env.scriptinfo, env.filemanager = {}, {}
 
-local function yield(this)
-	repeat t() until this() 
-end
+-------------------------------------------------------------------------------------------------------------------------------
 
+-- lib & data init
 spwn(function()
 	yield(function() return env.setupcomplete end) env.funcs.pop("Hi!")
 	env.essentials.library = env.funcs.recursivels("ui/library.lua", true) 
