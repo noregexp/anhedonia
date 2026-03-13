@@ -42,7 +42,7 @@ local folder = "Bоxten Sеx GUI"
 getgenv.BSGUI = {} 
 local env = getgenv.BSGUI
 
-env.expectedcompiledscriptversions = {
+env.expectedscriptversions = {
 	library = 3,
 	data = 3,
 	builder = 3,
@@ -490,8 +490,8 @@ local function loadintro()
 
 	if env.essentials.library then
 		env.funcs.introconsolelog("UI library successfully loaded. (" .. env.essentials.library.version .. ")")
-		if env.essentials.library.version ~= env.expectedcompiledscriptversions.library then
-			env.funcs.introconsolelog("The UI script library is out of date. (" .. env.essentials.library.version .. " ≠ " .. env.expectedcompiledscriptversions.library .. ")", "warn")
+		if env.essentials.library.version ~= env.expectedscriptversions.library then
+			env.funcs.introconsolelog("The UI script library is out of date. (" .. env.essentials.library.version .. " ≠ " .. env.expectedscriptversions.library .. ")", "warn")
 		end
 	else
 		env.funcs.introconsolelog("Something went wrong. (LibFail)", "warn")
@@ -501,8 +501,8 @@ local function loadintro()
 
 	if env.essentials.data then
 		env.funcs.introconsolelog("Script data successfully loaded. (" .. env.essentials.data.version .. ")")
-		if env.essentials.data.version ~= env.expectedcompiledscriptversions.data then
-			env.funcs.introconsolelog("The script data is out of date. (" .. env.essentials.data.version .. " ≠ " .. env.expectedcompiledscriptversions.data .. ")", "warn")
+		if env.essentials.data.version ~= env.expectedscriptversions.data then
+			env.funcs.introconsolelog("The script data is out of date. (" .. env.essentials.data.version .. " ≠ " .. env.expectedscriptversions.data .. ")", "warn")
 		end
 	else
 		env.funcs.introconsolelog("Something went wrong. (DataFail)", "warn")
@@ -519,8 +519,8 @@ local function loadintro()
 		env.funcs.introconsolelog("Something went wrong. (BuildFail)", "warn")
 	else
 		env.funcs.introconsolelog("Success: Script sections loaded", "succ")
-		if buildsucc.version ~= env.expectedcompiledscriptversions.builder then
-			env.funcs.introconsolelog("The script builder is out of date. (" .. buildsucc.version .. " ≠ " .. env.expectedcompiledscriptversions.builder .. ")", "warn")
+		if buildsucc.version ~= env.expectedscriptversions.builder then
+			env.funcs.introconsolelog("The script builder is out of date. (" .. buildsucc.version .. " ≠ " .. env.expectedscriptversions.builder .. ")", "warn")
 		end
 	end
 
