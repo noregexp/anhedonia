@@ -805,7 +805,7 @@ do
 
 		local success, result = pcall(function()
 			local truelink = link
-			if frompath then truelink = "https://raw.githubusercontent.com/noregularexpressions/anhedonia/refs/heads/main/boxten%20sex%20gui/" .. link end
+			if frompath then truelink = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/" .. link end
 			local source = game:HttpGet(truelink)
 			return loadstring(source)()
 		end)
