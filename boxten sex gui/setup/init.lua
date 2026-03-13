@@ -660,7 +660,7 @@ do
 		spwn(function()
 			yield(function() return env.setupcomplete end)
 			env.stuf.elevator = ws:WaitForChild("Elevators"):WaitForChild("Elevator") env.funcs.box("found elevator model")
-			env.stuf.roomfolder = ws:WaitForChild("CurrentRoom") env.funcs.box("found room model")
+			env.stuf.roomfolder = ws:WaitForChild("CurrentRoom") env.funcs.box("found room folder")
 
 			local updrefsrunning = false
 
@@ -669,7 +669,7 @@ do
 				updrefsrunning = true
 				env.funcs.box("updating references")
 
-				task.delay(0.2, function()
+				task.delay(0.1, function()
 					updrefsrunning = false
 
 					env.stuf.gameinfo = ws:FindFirstChild("Info")
@@ -680,6 +680,13 @@ do
 						if env.stuf.refconn2 then env.stuf.refconn2:Disconnect() env.stuf.refconn2 = nil end
 						env.funcs.pop("The room doesn't exist yet!")
 						return
+					else
+						if not env.funcs.roomcomplete() then
+							if env.stuf.refconn then env.stuf.refconn:Disconnect() env.stuf.refconn = nil end
+							if env.stuf.refconn2 then env.stuf.refconn2:Disconnect() env.stuf.refconn2 = nil end
+							env.funcs.pop("The room seems to be incomplete!")
+							return
+						end
 					end
 
 					if env.stuf.refconn then env.stuf.refconn:Disconnect() env.stuf.refconn = nil end
@@ -973,6 +980,15 @@ do
 		if env.stuf.gamemap then return env.stuf.gamemap else env.funcs.pop("Room not found.") return nil end
 	end
 
+	function env.funcs.roomcomplete() -- checks if currentroom is missing any components, returns false if so
+		if not env.stuf.currentroom:FindFirstChild("FreeArea") or
+		not env.stuf.currentroom:FindFirstChild("Monsters") or
+		not env.stuf.currentroom:FindFirstChild("Items") or
+		not env.stuf.currentroom:FindFirstChild("Generators") then
+			return false
+		end
+	end
+
 	function env.funcs.exists(plr) -- checks if the player exists in the player folder (ingame and not ingame), returns true or false
 		local exists, aim = nil, (plr and plr.Name) or env.stuf.user
 		exists = env.stuf.plrfolder:FindFirstChild(aim) 
@@ -992,6 +1008,8 @@ do
 		local result
 
 		if type == "floor" then
+			if not env.funcs.roomcomplete() then return end
+
 			local floorname = env.stuf.currentroom.Name
 			local hasdialoguetriggers = obj:GetAttribute("HasDialogueTriggers")
 
@@ -1017,6 +1035,8 @@ do
 			}
 
 		elseif type == "item" then
+			if not env.stuf.items then return end
+
 			local prompt = obj:FindFirstChild("Prompt") or nil
 			local prox = prompt and prompt:FindFirstChildOfClass("ProximityPrompt") or nil
 
@@ -1031,6 +1051,8 @@ do
 			}
 
 		elseif type == "machine" then
+			if not env.stuf.machines then return end
+
 			local stats = obj:FindFirstChild("Stats")
 			local pos = obj:FindFirstChild("TeleportPositions"):FindFirstChild("TeleportPosition").CFrame * CFrame.new(0, 2.3, 0)
 			
@@ -1067,6 +1089,8 @@ do
 			}
 
 		elseif type == "twisted" then
+			if not env.stuf.twisteds then return end
+
 			local name = obj.Name
 			local troot = obj:FindFirstChild("HumanoidRootPart") or obj.PrimaryPart or obj:FindFirstChildWhichIsA("BasePart")
 			local chaser = obj:FindFirstChild("Chaser")
