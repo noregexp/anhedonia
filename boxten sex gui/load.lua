@@ -165,7 +165,7 @@ end)
 
 -- main setup
 local setupsucc, setuperr = pcall(function() 
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/noregularexpressions/anhedonia/refs/heads/main/boxten%20sex%20gui/setup/init.lua"))() 
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/setup/init.lua"))() 
 end)
 
 if setuperr then
@@ -410,17 +410,17 @@ local function loadintro()
 
 	local assetex = {
 		images = {
-			["ive made a severe and continuous lapse in my judgement.png"] = "https://raw.githubusercontent.com/noregularexpressions/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/images/ive%20made%20a%20severe%20and%20continuous%20lapse%20in%20my%20judgement.png",
-			["heterochromia.png"] = "https://raw.githubusercontent.com/noregularexpressions/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/images/heterochromia.png",
-      ["daschund.png"] = "https://raw.githubusercontent.com/noregularexpressions/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/images/daschund.png"
+			["ive made a severe and continuous lapse in my judgement.png"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/images/ive%20made%20a%20severe%20and%20continuous%20lapse%20in%20my%20judgement.png",
+			["heterochromia.png"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/images/heterochromia.png",
+      ["daschund.png"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/images/daschund.png"
 		},
 		videos = {
-			["dandelions forever.mp4"] = "https://raw.githubusercontent.com/noregularexpressions/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/videos/dandelions%20forever.mp4",
+			["dandelions forever.mp4"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/videos/dandelions%20forever.mp4",
 		},
 		sounds = {
-			["call.mp3"] = "https://raw.githubusercontent.com/noregularexpressions/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/sounds/call.mp3",
-			["the things id do for a whopper with cheese.mp3"] = "https://raw.githubusercontent.com/noregularexpressions/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/sounds/the%20things%20id%20do%20for%20a%20whopper%20with%20cheese.mp3",
-			["flashbang.mp3"] = "https://raw.githubusercontent.com/noregularexpressions/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/sounds/flashbang.mp3",
+			["call.mp3"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/sounds/call.mp3",
+			["the things id do for a whopper with cheese.mp3"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/sounds/the%20things%20id%20do%20for%20a%20whopper%20with%20cheese.mp3",
+			["flashbang.mp3"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/sounds/flashbang.mp3",
 		}
 	}
 
