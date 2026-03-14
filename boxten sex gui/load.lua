@@ -157,11 +157,7 @@ spwn(function()
 			[Enum.MessageType.MessageWarning] = "warn",
 			[Enum.MessageType.MessageError]   = "err",
 		})[messageType] or ""
-
-		local cleaned = message:gsub("%s*%-%s*Script '.-',%s*Line%s*%d+%.?$", "")
-			:gsub("%s*%-%s*Script '.-'$", "")
-
-		bottomleft(cleaned, prefix)
+		bottomleft(message, prefix)
 	end)
 end)
 
