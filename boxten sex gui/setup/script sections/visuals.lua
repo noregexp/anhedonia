@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 3
+local version = 4
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -457,9 +457,9 @@ local function setupplayeresp(state)
 			local PLACEHOLDER = "rbxassetid://138028861815970"
 
 			local positions = {
-				UDim2.fromOffset(-20, 0),
+				UDim2.fromOffset(-40, 0),
 				UDim2.fromOffset(0, 0),
-				UDim2.fromOffset(20, 0),
+				UDim2.fromOffset(40, 0),
 			}
 
 			for i = 1, 3 do
