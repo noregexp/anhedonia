@@ -157,7 +157,11 @@ spwn(function()
 			[Enum.MessageType.MessageWarning] = "warn",
 			[Enum.MessageType.MessageError]   = "err",
 		})[messageType] or ""
-		bottomleft(message, prefix)
+
+		local cleaned = message:gsub("%s*%-%s*Script '.-',%s*Line%s*%d+%.?$", "")
+			:gsub("%s*%-%s*Script '.-'$", "")
+
+		bottomleft(cleaned, prefix)
 	end)
 end)
 
@@ -170,7 +174,7 @@ end)
 
 if setuperr then
 	warn("[Poppy]: Something went wrong. Try again later.")
-	error("[Shrimpo]: BOXTEN SEXGUI FAILED TO LOAD!!!: " .. setuperr)
+	error("[Shrimpo]: BOXTEN SEX GUI FAILED TO LOAD!!!: " .. setuperr)
 	return
 end
 
