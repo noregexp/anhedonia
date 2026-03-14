@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 6
+local version = 7
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -448,9 +448,9 @@ local function setupplayeresp(state)
 			local PLACEHOLDER = "rbxassetid://138028861815970"
 
 			local slotSize = 30
-			local gap = 4
-			local totalWidth = (slotSize * 3) + (gap * 2)  -- 47px total
-			local startX = -(totalWidth / 2) + (slotSize / 2)  -- left-align from center
+			local gap = 8
+			local totalWidth = (slotSize * 3) + (gap * 2)
+			local startX = -(totalWidth / 2) + (slotSize / 2)
 
 			local billboardWidth = totalWidth + 10
 			local billboardHeight = slotSize + 10
@@ -465,12 +465,56 @@ local function setupplayeresp(state)
 
 			local billboard = Instance.new("BillboardGui")
 			billboard.Size = UDim2.fromOffset(billboardWidth, billboardHeight)
-			billboard.StudsOffset = Vector3.new(0, -3.5, 0)
+			billboard.StudsOffset = Vector3.new(0, -3.2, 0)
 			billboard.AlwaysOnTop = true
 			billboard.Adornee = hrp
 			billboard.Parent = hrp
 			esphandler.player.ui[player.Name] = billboard
 			
+			-- resize billboard to fit name row above slots
+			local nameRowHeight = 36
+			billboard.Size = UDim2.fromOffset(billboardWidth, billboardHeight + nameRowHeight)
+
+			-- shift slot positions down to make room for name row
+			for i, pos in ipairs(positions) do
+				positions[i] = UDim2.fromOffset(pos.X.Offset, pos.Y.Offset + nameRowHeight)
+			end
+
+			-- icon
+			local icon = Instance.new("ImageLabel")
+			icon.Size = UDim2.fromOffset(30, 30)
+			icon.Position = UDim2.fromOffset(5, 3)
+			icon.BackgroundTransparency = 1
+			icon.Image = env.funcs.getstats("player", char).icon or ""
+			icon.Parent = billboard
+
+			-- display name
+			local displayname = Instance.new("TextLabel")
+			displayname.Size = UDim2.fromOffset(billboardWidth - 45, 18)
+			displayname.Position = UDim2.fromOffset(38, 2)
+			displayname.BackgroundTransparency = 1
+			displayname.Text = player.DisplayName
+			displayname.Font = Enum.Font.GothamBold
+			displayname.TextSize = 13
+			displayname.TextColor3 = Color3.new(1, 1, 1)
+			displayname.TextXAlignment = Enum.TextXAlignment.Left
+			displayname.TextTruncate = Enum.TextTruncate.AtEnd
+			displayname.Parent = billboard
+
+			-- username
+			local username = Instance.new("TextLabel")
+			username.Size = UDim2.fromOffset(billboardWidth - 45, 14)
+			username.Position = UDim2.fromOffset(38, 19)
+			username.BackgroundTransparency = 1
+			username.Text = "(@" .. player.Name .. ")"
+			username.Font = Enum.Font.Gotham
+			username.TextSize = 11
+			username.TextColor3 = Color3.fromRGB(200, 200, 200)
+			username.TextXAlignment = Enum.TextXAlignment.Left
+			username.TextTruncate = Enum.TextTruncate.AtEnd
+			username.Parent = billboard
+			
+			-- inventory
 			for i = 1, 3 do
 				local frame, img = bubble(billboard, positions[i], "")
 				slots[i] = frame
