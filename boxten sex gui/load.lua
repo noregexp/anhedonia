@@ -93,42 +93,48 @@ debugger.containerlayout.Padding = UDim.new(0, 1)
 local tagformats = {
 	{pattern = "^%[Boxten%]: ",  tag = "[Boxten]:",  rgb = "rgb(175, 52, 209)"},
 	{pattern = "^%[Poppy%]: ",   tag = "[Poppy]:",   rgb = "rgb(112, 234, 255)"},
-	{pattern = "^%[Shrimpo%]: ", tag = "[Shrimpo]:", rgb = "rgb(255, 182, 72)"},
+	{pattern = "^%[Shrimpo%]: ", tag = "[Shrimpo]:", rgb = "rgb(247, 109, 40)"},
 }
 
 local function bottomleft(text, log)
 	yield(function() return env.setupcomplete end)
 	if not env.gear.general.debugmode then return end
-
 	text = text:gsub("%s*\n%s*", " ")
 
+	local tagmatched = false
 	for _, entry in ipairs(tagformats) do
-		if text:match(entry.pattern) then
-			local rest = text:gsub(entry.pattern, "")
-			text = string.format(
-				"<font color=\"%s\">%s</font> <font color=\"rgb(255, 255, 255)\">%s</font>",
-				entry.rgb, entry.tag, rest
-			)
-			break
+		local tagstart = text:find(entry.pattern)
+		if tagstart then
+			local rest = text:match(entry.pattern .. "(.+)$")
+			if rest then
+				text = string.format(
+					'<font color="%s">%s</font> <font color="rgb(255, 255, 255)">%s</font>',
+					entry.rgb, entry.tag, rest
+				)
+				tagmatched = true
+				break
+			end
+		end
+	end
+
+	if not tagmatched and log then
+		local logcolors = {
+			warn = "rgb(254, 240, 117)",
+			err  = "rgb(237, 106, 100)",
+			info = "rgb(102, 187, 255)",
+		}
+		local logcol = logcolors[log]
+		if logcol then
+			text = string.format('<font color="%s">%s</font>', logcol, text)
 		end
 	end
 
 	debugger.logcount = debugger.logcount + 1
-	local col = Color3.fromRGB(255, 255, 255)
-	if log then
-		if log == "warn" then 
-			col = Color3.fromRGB(254, 240, 117)
-		elseif log == "err" then 
-			col = Color3.fromRGB(237, 106, 100)
-		elseif log == "info" then 
-			col = Color3.fromRGB(102, 187, 255)
-		end
-	end
 
 	local debuglog = Instance.new("TextLabel")
 	debuglog.Size = UDim2.new(1, 0, 0, 13)
 	debuglog.BackgroundTransparency = 1
-	debuglog.TextColor3 = col
+	debuglog.TextColor3 = Color3.fromRGB(255, 255, 255)
 	debuglog.TextXAlignment = Enum.TextXAlignment.Right
 	debuglog.Font = Enum.Font.FredokaOne
 	debuglog.TextSize = 10
@@ -157,6 +163,11 @@ spwn(function()
 			[Enum.MessageType.MessageWarning] = "warn",
 			[Enum.MessageType.MessageError]   = "err",
 		})[messageType] or ""
+
+		message = message:gsub("%s*Stack Begin.+Stack End", "")
+		message = message:gsub("^.-%:%d+%: ", "")
+		message = message:gsub("%s*$", "")
+
 		bottomleft(message, prefix)
 	end)
 end)
