@@ -281,9 +281,11 @@ local function loadintro()
 
 		togglebutton.AnchorPoint = Vector2.new(0.5, 0.5)
 		togglebutton.Position = UDim2.new(0.5, 0, 0, 100)
+		
+		t(0.8)
 
 		env.stuf.togglebutton = togglebutton
-		task.delay(0.8, function() env.stuf.togglebuttondrag = env.essentials.library.makedraggable(togglebutton) end)
+		env.stuf.togglebuttondrag = env.essentials.library.makedraggable(togglebutton)
 
 		togglebutton.MouseEnter:Connect(function() env.essentials.library.hov() scaleTo(1.02, hover) end)
 		togglebutton.MouseLeave:Connect(function() scaleTo(1, hover) end)
