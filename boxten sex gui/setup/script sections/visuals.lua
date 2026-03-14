@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 4
+local version = 5
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -443,25 +443,29 @@ local function setupplayeresp(state)
 			local inventory = char:WaitForChild("Inventory", 10)
 			if not hrp or not inventory then return end
 
+			local slots = {}
+			local slotImages = {}
+			local PLACEHOLDER = "rbxassetid://138028861815970"
+
+			local slotSize = 13
+			local gap = 4
+			local totalWidth = (slotSize * 3) + (gap * 2)  -- 47px total
+			local startX = -(totalWidth / 2) + (slotSize / 2)  -- left-align from center
+
+			local positions = {
+				UDim2.fromOffset(startX, 0),                    -- -17
+				UDim2.fromOffset(startX + slotSize + gap, 0),   -- 0
+				UDim2.fromOffset(startX + (slotSize + gap) * 2, 0), -- 17
+			}
+			
 			local billboard = Instance.new("BillboardGui")
-			billboard.Name = "aamInventoryESP"
-			billboard.Size = UDim2.fromOffset(60, 20)
+			billboard.Size = UDim2.fromOffset(totalWidth + 10, 20)
 			billboard.StudsOffset = Vector3.new(0, -3, 0)
 			billboard.AlwaysOnTop = true
 			billboard.Adornee = hrp
 			billboard.Parent = hrp
 			esphandler.player.ui[player.Name] = billboard
-
-			local slots = {}
-			local slotImages = {}
-			local PLACEHOLDER = "rbxassetid://138028861815970"
-
-			local positions = {
-				UDim2.fromOffset(-40, 0),
-				UDim2.fromOffset(0, 0),
-				UDim2.fromOffset(40, 0),
-			}
-
+			
 			for i = 1, 3 do
 				local frame, img = bubble(billboard, positions[i], "")
 				slots[i] = frame
