@@ -1273,7 +1273,7 @@ local function autofarm(state)
 
 		local stoppedextractingconn = env.stuf.char.Decoding.Changed:Connect(function(val)
 			if not val then
-				if not env.funcs.getgamestat().panicmode then
+				if not env.funcs.getgamestats().panicmode then
 					env.funcs.box("player stopped extracting, firing nearby machine prompts")
 
 					t(0.5)
