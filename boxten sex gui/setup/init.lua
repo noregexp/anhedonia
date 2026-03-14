@@ -821,7 +821,7 @@ do
 
 	function env.funcs.shr(s, force) -- error
 		if env.gear.general.debugmode or force then
-			error("[Shrimpo]: " .. tostring(s), 0)
+			error("[Shrimpo]: " .. tostring(s))
 		end
 	end
 
