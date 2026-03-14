@@ -1079,6 +1079,7 @@ do
 			}
 
 		elseif type == "machine" then
+			if not env.funcs.roomcomplete() then return end
 			if not env.stuf.machines then return end
 
 			local stats = obj:FindFirstChild("Stats")
