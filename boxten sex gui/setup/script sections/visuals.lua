@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 4
+local version = 3
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -417,8 +417,6 @@ local function setupplayeresp(state)
 			if esphandler.player.ui[player.Name] then
 				local billboards = esphandler.player.ui[player.Name]
 				if billboards.name then billboards.name:Destroy() end
-				if billboards.inv then billboards.inv:Destroy() end
-				if billboards.side then billboards.side:Destroy() end
 				esphandler.player.ui[player.Name] = nil
 			end
 
@@ -430,8 +428,6 @@ local function setupplayeresp(state)
 					if esphandler.player.ui[player.Name] then
 						local billboards = esphandler.player.ui[player.Name]
 						if billboards.name then billboards.name:Destroy() end
-						if billboards.inv then billboards.inv:Destroy() end
-						if billboards.side then billboards.side:Destroy() end
 						esphandler.player.ui[player.Name] = nil
 					end
 				end
@@ -467,16 +463,21 @@ local function setupplayeresp(state)
 			local billboards = {}
 			esphandler.player.ui[player.Name] = billboards
 
-			local nameBillboard = Instance.new("BillboardGui")
-			nameBillboard.Size = UDim2.fromOffset(billboardWidth, nameRowHeight)
-			nameBillboard.StudsOffsetWorldSpace = Vector3.new(0, 2.5, 0)  -- above head in world space
-			nameBillboard.MaxDistance = 60  -- hide beyond this distance
-			nameBillboard.AlwaysOnTop = true
-			nameBillboard.Adornee = head
-			nameBillboard.Parent = head
-			nameBillboard.ResetOnSpawn = false
-			nameBillboard.ClipsDescendants = false
-			billboards.name = nameBillboard
+			local fullBillboard = Instance.new("BillboardGui")
+			fullBillboard.Size = UDim2.fromOffset(300, 160)
+			fullBillboard.StudsOffset = Vector3.new(0, 0, 0)
+			fullBillboard.AlwaysOnTop = true
+			fullBillboard.Adornee = hrp
+			fullBillboard.Parent = hrp
+			billboards.name = fullBillboard
+			billboards.inv = fullBillboard
+			billboards.side = fullBillboard
+
+			local nameSection = Instance.new("Frame")
+			nameSection.Size = UDim2.fromOffset(billboardWidth, nameRowHeight)
+			nameSection.Position = UDim2.new(0.5, -billboardWidth / 2, 0, 0)
+			nameSection.BackgroundTransparency = 1
+			nameSection.Parent = fullBillboard
 
 			-- icon
 			local icon = Instance.new("ImageLabel")
@@ -484,7 +485,7 @@ local function setupplayeresp(state)
 			icon.Position = UDim2.fromOffset(13, 3)
 			icon.BackgroundTransparency = 1
 			icon.Image = env.funcs.getstats("player", char).icon or ""
-			icon.Parent = nameBillboard
+			icon.Parent = nameSection
 
 			-- display name
 			local displayname = Instance.new("TextLabel")
@@ -496,7 +497,7 @@ local function setupplayeresp(state)
 			displayname.TextSize = 13
 			displayname.TextColor3 = espsettings.colors.player
 			displayname.TextXAlignment = Enum.TextXAlignment.Left
-			displayname.Parent = nameBillboard
+			displayname.Parent = nameSection
 
 			local border1 = Instance.new("UIStroke")
 			border1.Color = Color3.fromRGB(255, 255, 255)
@@ -513,23 +514,18 @@ local function setupplayeresp(state)
 			username.TextSize = 11
 			username.TextColor3 = espsettings.colors.player
 			username.TextXAlignment = Enum.TextXAlignment.Left
-			username.Parent = nameBillboard
+			username.Parent = nameSection
 
 			local border2 = Instance.new("UIStroke")
 			border2.Color = Color3.fromRGB(255, 255, 255)
 			border2.Thickness = 2
 			border2.Parent = username
 
-			local invBillboard = Instance.new("BillboardGui")
-			invBillboard.Size = UDim2.fromOffset(billboardWidth, billboardHeight)
-			invBillboard.StudsOffsetWorldSpace = Vector3.new(0, -2.5, 0)  -- below hrp in world space
-			invBillboard.MaxDistance = 60
-			invBillboard.AlwaysOnTop = true
-			invBillboard.Adornee = hrp
-			invBillboard.Parent = hrp
-			invBillboard.ResetOnSpawn = false
-			invBillboard.ClipsDescendants = false
-			billboards.inv = invBillboard
+			local invSection = Instance.new("Frame")
+			invSection.Size = UDim2.fromOffset(billboardWidth, billboardHeight)
+			invSection.Position = UDim2.new(0.5, -billboardWidth / 2, 1, -billboardHeight)
+			invSection.BackgroundTransparency = 1
+			invSection.Parent = fullBillboard
 
 			local invPositions = {
 				UDim2.fromOffset(centerX + startX,                         centerY),
@@ -538,7 +534,7 @@ local function setupplayeresp(state)
 			}
 
 			for i = 1, 3 do
-				local frame, img = bubble(invBillboard, invPositions[i], "")
+				local frame, img = bubble(invSection, invPositions[i], "")
 				slots[i] = frame
 				slotImages[i] = img
 			end
@@ -575,27 +571,22 @@ local function setupplayeresp(state)
 				end)
 			end
 
-			invBillboard.Destroying:Connect(function()
+			fullBillboard.Destroying:Connect(function()
 				for _, conn in pairs(slotConns) do
 					if conn then conn:Disconnect() end
 				end
 			end)
 			
-			local sideBillboard = Instance.new("BillboardGui")
-			sideBillboard.Size = UDim2.fromOffset(120, 80)
-			sideBillboard.StudsOffsetWorldSpace = Vector3.new(3.5, 0, 0)  -- right side in world space
-			sideBillboard.MaxDistance = 60
-			sideBillboard.AlwaysOnTop = true
-			sideBillboard.Adornee = hrp
-			sideBillboard.Parent = hrp
-			sideBillboard.ResetOnSpawn = false
-			sideBillboard.ClipsDescendants = false
-			billboards.side = sideBillboard
+			local sideSection = Instance.new("Frame")
+			sideSection.Size = UDim2.fromOffset(120, 100)
+			sideSection.Position = UDim2.new(1, 8, 0.5, -50)
+			sideSection.BackgroundTransparency = 1
+			sideSection.Parent = fullBillboard
 
 			local sidelayout = Instance.new("UIListLayout")
 			sidelayout.SortOrder = Enum.SortOrder.LayoutOrder
 			sidelayout.Padding = UDim.new(0, 2)
-			sidelayout.Parent = sideBillboard
+			sidelayout.Parent = sideSection
 
 			local function addSideText(text, color, size)
 				local label = Instance.new("TextLabel")
@@ -606,7 +597,7 @@ local function setupplayeresp(state)
 				label.TextSize = size or 11
 				label.TextColor3 = color or Color3.new(1, 1, 1)
 				label.TextXAlignment = Enum.TextXAlignment.Left
-				label.Parent = sideBillboard
+				label.Parent = sideSection
 
 				local stroke = Instance.new("UIStroke")
 				stroke.Color = Color3.fromRGB(255, 255, 255)
@@ -622,7 +613,7 @@ local function setupplayeresp(state)
 			healthRow.Size = UDim2.new(1, 0, 0, 13)
 			healthRow.BackgroundTransparency = 1
 			healthRow.LayoutOrder = 0
-			healthRow.Parent = sideBillboard
+			healthRow.Parent = sideSection
 
 			local healthRowLayout = Instance.new("UIListLayout")
 			healthRowLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -785,7 +776,7 @@ local function setupplayeresp(state)
 			local tapesRow = Instance.new("Frame")
 			tapesRow.Size = UDim2.new(1, 0, 0, 13)
 			tapesRow.BackgroundTransparency = 1
-			tapesRow.Parent = sideBillboard
+			tapesRow.Parent = sideSection
 
 			local tapesRowLayout = Instance.new("UIListLayout")
 			tapesRowLayout.FillDirection = Enum.FillDirection.Horizontal
