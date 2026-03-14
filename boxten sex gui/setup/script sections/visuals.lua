@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 8
+local version = 9
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -474,17 +474,27 @@ local function setupplayeresp(state)
 			local nameRowHeight = 36
 			billboard.Size = UDim2.fromOffset(billboardWidth, billboardHeight + nameRowHeight)
 
-			for i, pos in ipairs(positions) do
-				positions[i] = UDim2.fromOffset(pos.X.Offset, pos.Y.Offset + nameRowHeight)
-			end
+			local head = char:WaitForChild("Head", 10)
+			if not hrp or not head or not inventory then return end
+
+			local billboards = {}
+			esphandler.player.ui[player.Name] = billboards
+
+			local nameBillboard = Instance.new("BillboardGui")
+			nameBillboard.Size = UDim2.fromOffset(billboardWidth, nameRowHeight)
+			nameBillboard.StudsOffset = Vector3.new(0, 1.5, 0)
+			nameBillboard.AlwaysOnTop = true
+			nameBillboard.Adornee = head
+			nameBillboard.Parent = head
+			billboards.name = nameBillboard
 
 			-- icon
 			local icon = Instance.new("ImageLabel")
-			icon.Size = UDim2.fromOffset(30, 30)
+			icon.Size = UDim2.fromOffset(30, 28)
 			icon.Position = UDim2.fromOffset(5, 3)
 			icon.BackgroundTransparency = 1
 			icon.Image = env.funcs.getstats("player", char).icon or ""
-			icon.Parent = billboard
+			icon.Parent = nameBillboard
 
 			-- display name
 			local displayname = Instance.new("TextLabel")
@@ -496,12 +506,12 @@ local function setupplayeresp(state)
 			displayname.TextSize = 13
 			displayname.TextColor3 = espsettings.colors.player
 			displayname.TextXAlignment = Enum.TextXAlignment.Left
-			displayname.Parent = billboard
-			
-			local border = Instance.new("UIStroke")
-			border.Color = Color3.fromRGB(255, 255, 255)
-			border.Thickness = 1
-			border.Parent = displayname
+			displayname.Parent = nameBillboard
+
+			local border1 = Instance.new("UIStroke")
+			border1.Color = Color3.fromRGB(255, 255, 255)
+			border1.Thickness = 2
+			border1.Parent = displayname
 
 			-- username
 			local username = Instance.new("TextLabel")
@@ -513,16 +523,29 @@ local function setupplayeresp(state)
 			username.TextSize = 11
 			username.TextColor3 = espsettings.colors.player
 			username.TextXAlignment = Enum.TextXAlignment.Left
-			username.Parent = billboard
-			
-			local border = Instance.new("UIStroke")
-			border.Color = Color3.fromRGB(255, 255, 255)
-			border.Thickness = 1
-			border.Parent = username
-			
-			-- inventory
+			username.Parent = nameBillboard
+
+			local border2 = Instance.new("UIStroke")
+			border2.Color = Color3.fromRGB(255, 255, 255)
+			border2.Thickness = 2
+			border2.Parent = username
+
+			local invBillboard = Instance.new("BillboardGui")
+			invBillboard.Size = UDim2.fromOffset(billboardWidth, billboardHeight)
+			invBillboard.StudsOffset = Vector3.new(0, -3.2, 0)
+			invBillboard.AlwaysOnTop = true
+			invBillboard.Adornee = hrp
+			invBillboard.Parent = hrp
+			billboards.inv = invBillboard
+
+			local invPositions = {
+				UDim2.fromOffset(centerX + startX,                         centerY),
+				UDim2.fromOffset(centerX + startX + slotSize + gap,        centerY),
+				UDim2.fromOffset(centerX + startX + (slotSize + gap) * 2,  centerY),
+			}
+
 			for i = 1, 3 do
-				local frame, img = bubble(billboard, positions[i], "")
+				local frame, img = bubble(invBillboard, invPositions[i], "")
 				slots[i] = frame
 				slotImages[i] = img
 			end
