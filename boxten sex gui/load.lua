@@ -45,7 +45,7 @@ local env = getgenv.BSGUI
 env.expectedscriptversions = {
 	library = 3,
 	data = 3,
-	builder = 3,
+	builder = 4,
 
 	mainsection = 3,
 	navigationsection = 3,
