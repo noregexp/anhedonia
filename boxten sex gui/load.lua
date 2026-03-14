@@ -164,10 +164,6 @@ spwn(function()
 			[Enum.MessageType.MessageError]   = "err",
 		})[messageType] or ""
 
-		message = message:gsub("%s*Stack Begin.+Stack End", "")
-		message = message:gsub("^.-%:%d+%: ", "")
-		message = message:gsub("%s*$", "")
-
 		bottomleft(message, prefix)
 	end)
 end)
