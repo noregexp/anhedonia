@@ -174,7 +174,7 @@ function env.funcs.tomachine(method)
 					end
 				end
 			end
-			
+
 			if cantgothere then continue end
 
 			for _, obj in ipairs(env.stuf.freearea:GetChildren()) do
@@ -185,13 +185,13 @@ function env.funcs.tomachine(method)
 					end
 				end
 			end
-			
+
 			if cantgothere then continue end
 
 			for _, monster in ipairs(env.stuf.twisteds:GetChildren()) do
 				if not monster:IsA("Model") then continue end
 				local tstats = env.funcs.getstats("twisted", monster)
-				
+
 				local twis = tstats.name
 				local twisroot = tstats.troot
 				if not twisroot then continue end
@@ -227,7 +227,7 @@ function env.funcs.tomachine(method)
 			return a.progress > b.progress
 		end)
 		env.funcs.moveplr(good[1].tppos, method)
-		
+
 		if env.stuf.afe.running then
 			t(0.5)
 			for _ = 1, 3 do
@@ -236,7 +236,7 @@ function env.funcs.tomachine(method)
 			end
 		end
 	else
-		env.funcs.pop("No available generators found!")
+		env.funcs.pop("No available machines found!")
 		if env.stuf.afe.running and env.stuf.machines then
 			toelevator(2, "tp")
 		end
