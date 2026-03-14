@@ -265,36 +265,50 @@ local esphandler = {
 	player = {
 		enabled = false,
 		hls = {},
-		conn = nil
+		conn = nil,
+		
+		ui = {}
 	},
 	twisted = {
 		enabled = false,
 		hls = {},
-		conn = nil
+		conn = nil,
+
+		ui = {}
 	},
 	machine = {
 		enabled = false,
 		hls = {},
-		conn = nil
+		conn = nil,
+
+		ui = {}
 	},
 	item = {
 		enabled = false,
 		hls = {},
-		conn = nil
+		conn = nil,
+
+		ui = {}
 	},
 	elevator = {
 		enabled = false,
 		hls = {},
+
+		ui = {}
 	},
 	fakeelevator = {
 		enabled = false,
 		hls = {},
-		conn = nil
+		conn = nil,
+
+		ui = {}
 	},
 	twistedobstacle = {
 		enabled = false,
 		hls = {},
-		conn = nil
+		conn = nil,
+
+		ui = {}
 	}
 }
 
@@ -366,6 +380,23 @@ local function newhl(parent, fill, outline)
 	return h
 end
 
+local function bubble(parent, pos, img)
+	local lib = env.essentials.library
+	local itemframe, itemimage
+
+	if parent and pos then
+		itemframe = lib.makecoolframe(UDim2.fromOffset(13, 13), parent, nil, nil, pos, true)
+
+		itemimage = Instance.new("ImageLabel")
+		itemimage.BackgroundTransparency = 1
+		itemimage.Image = img or ""
+		itemimage.Size = UDim2.fromScale(1, 1)
+		itemimage.Parent = itemframe
+	end
+	
+	return itemframe, itemimage
+end
+
 local function clearhls(type)
 	for _, h in pairs(esphandler[type].hls) do
 		if h and h.Parent then h:Destroy() end
@@ -380,22 +411,100 @@ local function setupplayeresp(state)
 	if not state then return end
 
 	local function apply(player)
-		-- if player == env.stuf.plr then return end
 		if not env.stuf.plrfolder:FindFirstChild(player.Name) then return end
 
 		local function onchar(char)
 			if esphandler.player.hls[player.Name] then
 				esphandler.player.hls[player.Name]:Destroy()
 			end
-			if esphandler.player.enabled then
-				esphandler.player.hls[player.Name] = newhl(char, espsettings.colors.player)
-				char.AncestryChanged:Connect(function()
-					if not char.Parent and esphandler.player.hls[player.Name] then
+
+			if esphandler.player.ui[player.Name] then
+				esphandler.player.ui[player.Name]:Destroy()
+				esphandler.player.ui[player.Name] = nil
+			end
+
+			if not esphandler.player.enabled then return end
+
+			esphandler.player.hls[player.Name] = newhl(char, espsettings.colors.player)
+			char.AncestryChanged:Connect(function()
+				if not char.Parent then
+					if esphandler.player.hls[player.Name] then
 						esphandler.player.hls[player.Name]:Destroy()
 						esphandler.player.hls[player.Name] = nil
 					end
+					if esphandler.player.ui[player.Name] then
+						esphandler.player.ui[player.Name]:Destroy()
+						esphandler.player.ui[player.Name] = nil
+					end
+				end
+			end)
+
+			local hrp = char:WaitForChild("HumanoidRootPart", 10)
+			local inventory = char:WaitForChild("Inventory", 10)
+			if not hrp or not inventory then return end
+
+			local billboard = Instance.new("BillboardGui")
+			billboard.Name = "aamInventoryESP"
+			billboard.Size = UDim2.fromOffset(60, 20)
+			billboard.StudsOffset = Vector3.new(0, -2.5, 0)
+			billboard.AlwaysOnTop = true
+			billboard.Adornee = hrp
+			billboard.Parent = hrp
+			esphandler.player.ui[player.Name] = billboard
+
+			local slots = {}
+			local slotImages = {}
+			local PLACEHOLDER = "rbxassetid://138028861815970"
+
+			local positions = {
+				UDim2.fromOffset(-20, 0),
+				UDim2.fromOffset(0, 0),
+				UDim2.fromOffset(20, 0),
+			}
+
+			for i = 1, 3 do
+				local frame, img = bubble(billboard, positions[i], "")
+				slots[i] = frame
+				slotImages[i] = img
+			end
+
+			local function updateSlot(i, value)
+				if not slotImages[i] then return end
+				if value and value ~= "" then
+					slotImages[i].Image = PLACEHOLDER
+				else
+					slotImages[i].Image = ""
+				end
+			end
+
+			local slotConns = {}
+			for i = 1, 3 do
+				local slotValue = inventory:FindFirstChild("Slot" .. i)
+
+				if slotValue then
+					updateSlot(i, slotValue.Value)
+
+					slotConns[i] = slotValue.Changed:Connect(function(newValue)
+						updateSlot(i, newValue)
+					end)
+				end
+
+				inventory.ChildAdded:Connect(function(child)
+					if child.Name == "Slot" .. i then
+						updateSlot(i, child.Value)
+						if slotConns[i] then slotConns[i]:Disconnect() end
+						slotConns[i] = child.Changed:Connect(function(newValue)
+							updateSlot(i, newValue)
+						end)
+					end
 				end)
 			end
+
+			billboard.Destroying:Connect(function()
+				for _, conn in pairs(slotConns) do
+					if conn then conn:Disconnect() end
+				end
+			end)
 		end
 
 		if player.Character then onchar(player.Character) end
