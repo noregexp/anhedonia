@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 13
+local version = 14
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -460,7 +460,6 @@ local function setupplayeresp(state)
 			}
 			
 			local nameRowHeight = 36
-			billboard.Size = UDim2.fromOffset(billboardWidth, billboardHeight + nameRowHeight)
 
 			local head = char:WaitForChild("Head", 10)
 			local hrp = char:WaitForChild("HumanoidRootPart", 10)
