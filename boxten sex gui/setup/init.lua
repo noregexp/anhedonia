@@ -1063,7 +1063,7 @@ do
 			}
 
 		elseif type == "item" then
-			if not env.stuf.items then return end
+			if not env.stuf.items or not env.stuf.currentroom then return end
 
 			local prompt = obj:FindFirstChild("Prompt") or nil
 			local prox = prompt and prompt:FindFirstChildOfClass("ProximityPrompt") or nil
@@ -1079,8 +1079,7 @@ do
 			}
 
 		elseif type == "machine" then
-			if not env.funcs.roomcomplete() then return end
-			if not env.stuf.machines then return end
+			if not env.stuf.machines or not env.stuf.currentroom then return end
 
 			local stats = obj:FindFirstChild("Stats")
 			local pos = obj:FindFirstChild("TeleportPositions"):FindFirstChild("TeleportPosition").CFrame * CFrame.new(0, 2.3, 0)
@@ -1118,7 +1117,7 @@ do
 			}
 
 		elseif type == "twisted" then
-			if not env.stuf.twisteds then return end
+			if not env.stuf.twisteds or not env.stuf.currentroom then return end
 
 			local name = obj.Name
 			local troot = obj:FindFirstChild("HumanoidRootPart") or obj.PrimaryPart or obj:FindFirstChildWhichIsA("BasePart")
