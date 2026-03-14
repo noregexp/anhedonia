@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 11
+local version = 12
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -482,7 +482,7 @@ local function setupplayeresp(state)
 
 			local nameBillboard = Instance.new("BillboardGui")
 			nameBillboard.Size = UDim2.fromOffset(billboardWidth, nameRowHeight)
-			nameBillboard.StudsOffset = Vector3.new(0, 0.8, 0)
+			nameBillboard.StudsOffset = Vector3.new(0, 0.2, 0)
 			nameBillboard.AlwaysOnTop = true
 			nameBillboard.Adornee = head
 			nameBillboard.Parent = head
