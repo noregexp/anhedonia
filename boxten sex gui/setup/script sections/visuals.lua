@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 3
+local version = 4
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -607,14 +607,17 @@ local function setupplayeresp(state)
 				return label
 			end
 			
+			local healthlabel = addSideText("Health: ", espsettings.colors.player, 40)
+			
 			local HEART_ICON = "rbxassetid://16790556042"
 			local maxHearts = 4
 
 			local healthRow = Instance.new("Frame")
 			healthRow.Size = UDim2.new(1, 0, 0, 15)
+			healthRow.Position = UDim2.new(1, 0, 0, 0)
 			healthRow.BackgroundTransparency = 1
 			healthRow.LayoutOrder = 0
-			healthRow.Parent = sideBillboard
+			healthRow.Parent = healthlabel
 
 			local heartLayout = Instance.new("UIListLayout")
 			heartLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -660,10 +663,10 @@ local function setupplayeresp(state)
 				end)
 			end
 
-			local staminalabel = addSideText("Stamina: ?/?", Color3.fromRGB(200, 200, 200), 11)
+			local staminalabel = addSideText("Stamina: ?/?", espsettings.colors.player, 40)
 
-			local staminaVal = char:FindFirstChild("Stamina")
-			local currentStaminaVal = char:FindFirstChild("CurrentStamina")
+			local staminaVal = char.Stats:FindFirstChild("Stamina")
+			local currentStaminaVal = char.Stats:FindFirstChild("CurrentStamina")
 
 			local function updateStamina()
 				local max = staminaVal and staminaVal.Value or "?"
@@ -706,7 +709,7 @@ local function setupplayeresp(state)
 				return actual
 			end
 
-			local stealthLabel = addSideText("Stealth: ?", Color3.fromRGB(200, 200, 200), 11)
+			local stealthLabel = addSideText("Stealth: ?", espsettings.colors.player, 40)
 
 			local function updateStealth()
 				local val = getstealthvalue(char)
