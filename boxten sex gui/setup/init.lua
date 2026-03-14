@@ -1071,7 +1071,7 @@ do
 
 			local stats = obj:FindFirstChild("Stats")
 			local pos = obj:FindFirstChild("TeleportPositions"):FindFirstChild("TeleportPosition").CFrame * CFrame.new(0, 2.3, 0)
-			
+
 			local prox
 			if obj:FindFirstChild("Prompt") then
 				prox = obj.Prompt:FindFirstChildOfClass("ProximityPrompt") or obj.Prompt.Attachment:FindFirstChildOfClass("ProximityPrompt")
@@ -1261,14 +1261,14 @@ do
 				for i = 1, 4 do
 					local slotn = "Slot" .. i
 					local slotvalue = env.funcs.getstats("player", env.stuf.char)[slotn:lower()]
-				
+
 					if slotvalue ~= "None" then
 						local args = {
 							env.stuf.char,
 							game:GetService("Players").LocalPlayer.Character:WaitForChild("Inventory"):WaitForChild(slotn)
 						}
 						rst.Events.ItemEvent:InvokeServer(unpack(args))
-					
+
 						if breakifoneused then
 							local newslotvalue = env.funcs.getstats("player", env.stuf.char)[slotn:lower()]
 							if newslotvalue == "None" then
@@ -1299,7 +1299,7 @@ do
 	function env.funcs.veemoteactive(plr) -- returns the vmotes value if the user has it, true if active, false if inactive
 		local plr = env.stuf.char or plr.Character
 		local folder = plr:FindFirstChild("Trinkets")
-		
+
 		if folder then
 			for _, trinket in ipairs(folder:GetChildren()) do
 				if trinket.Value == "VeeRemote" then
