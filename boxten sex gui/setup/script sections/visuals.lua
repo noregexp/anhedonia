@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 14
+local version = 17
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -414,12 +414,11 @@ local function setupplayeresp(state)
 		if not env.stuf.plrfolder:FindFirstChild(player.Name) then return end
 
 		local function onchar(char)
-			if esphandler.player.hls[player.Name] then
-				esphandler.player.hls[player.Name]:Destroy()
-			end
-
 			if esphandler.player.ui[player.Name] then
-				esphandler.player.ui[player.Name]:Destroy()
+				local billboards = esphandler.player.ui[player.Name]
+				if billboards.name then billboards.name:Destroy() end
+				if billboards.inv then billboards.inv:Destroy() end
+				if billboards.side then billboards.side:Destroy() end
 				esphandler.player.ui[player.Name] = nil
 			end
 
@@ -428,12 +427,11 @@ local function setupplayeresp(state)
 			esphandler.player.hls[player.Name] = newhl(char, espsettings.colors.player)
 			char.AncestryChanged:Connect(function()
 				if not char.Parent then
-					if esphandler.player.hls[player.Name] then
-						esphandler.player.hls[player.Name]:Destroy()
-						esphandler.player.hls[player.Name] = nil
-					end
 					if esphandler.player.ui[player.Name] then
-						esphandler.player.ui[player.Name]:Destroy()
+						local billboards = esphandler.player.ui[player.Name]
+						if billboards.name then billboards.name:Destroy() end
+						if billboards.inv then billboards.inv:Destroy() end
+						if billboards.side then billboards.side:Destroy() end
 						esphandler.player.ui[player.Name] = nil
 					end
 				end
@@ -471,6 +469,7 @@ local function setupplayeresp(state)
 
 			local nameBillboard = Instance.new("BillboardGui")
 			nameBillboard.Size = UDim2.fromOffset(billboardWidth, nameRowHeight)
+			nameBillboard.StudsOffset = Vector3.new(0, -0.2, 0)
 			nameBillboard.AlwaysOnTop = true
 			nameBillboard.Adornee = head
 			nameBillboard.Parent = head
@@ -575,6 +574,38 @@ local function setupplayeresp(state)
 					if conn then conn:Disconnect() end
 				end
 			end)
+			
+			local sideBillboard = Instance.new("BillboardGui")
+			sideBillboard.Size = UDim2.fromOffset(120, 80)
+			sideBillboard.StudsOffset = Vector3.new(3.5, 0, 0)
+			sideBillboard.AlwaysOnTop = true
+			sideBillboard.Adornee = hrp
+			sideBillboard.Parent = hrp
+			billboards.side = sideBillboard
+
+			local sidelayout = Instance.new("UIListLayout")
+			sidelayout.SortOrder = Enum.SortOrder.LayoutOrder
+			sidelayout.Padding = UDim.new(0, 2)
+			sidelayout.Parent = sideBillboard
+
+			local function addSideText(text, color, size)
+				local label = Instance.new("TextLabel")
+				label.Size = UDim2.new(1, 0, 0, size + 2)
+				label.BackgroundTransparency = 1
+				label.Text = text
+				label.Font = Enum.Font.FredokaOne
+				label.TextSize = size or 11
+				label.TextColor3 = color or Color3.new(1, 1, 1)
+				label.TextXAlignment = Enum.TextXAlignment.Left
+				label.Parent = sideBillboard
+
+				local stroke = Instance.new("UIStroke")
+				stroke.Color = Color3.fromRGB(255, 255, 255)
+				stroke.Thickness = 2
+				stroke.Parent = label
+
+				return label
+			end
 		end
 
 		if player.Character then onchar(player.Character) end
