@@ -446,7 +446,7 @@ local function setupplayeresp(state)
 			local billboard = Instance.new("BillboardGui")
 			billboard.Name = "aamInventoryESP"
 			billboard.Size = UDim2.fromOffset(60, 20)
-			billboard.StudsOffset = Vector3.new(0, -4, 0)
+			billboard.StudsOffset = Vector3.new(0, -3, 0)
 			billboard.AlwaysOnTop = true
 			billboard.Adornee = hrp
 			billboard.Parent = hrp
