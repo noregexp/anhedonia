@@ -707,6 +707,8 @@ local function getitemslot(stats, itemname)
 end
 
 local function tryuseitem(stats, forcecategories)
+	t(0.2)
+
 	local extracting = stats.extracting
 	local twistedschasing = (stats.twistedschasing or 0) > 0
 	local health = env.stuf.char:FindFirstChildOfClass("Humanoid").Health
@@ -820,6 +822,7 @@ local function autouseitems(state)
 		if val >= 20 then return end
 		local stats = env.funcs.getstats("player", env.stuf.char)
 		if not stats then return end
+		-- stamina low: try stamina items specifically first
 		tryuseitem(stats, autouseitemcats.stamina)
 		if autouseitemsbehavior == "Instant" then tryuseitem(stats) end
 	end))
@@ -1209,20 +1212,7 @@ local function autofarm(state)
 						if not env.funcs.getgamestats().panicmode then
 							if env.funcs.getgamestats().flooractive then
 								if not env.funcs.getstats("player", env.stuf.char).extracting then
-									local beingchased
-
-									for _, twisted in ipairs(env.stuf.twisteds:GetChildren()) do
-											if env.funcs.getstats("twisted", twisted).chasing == env.stuf.plr then
-												beingchased = true
-											end
-									end
-									
-									if not beingchased then
-										env.funcs.tomachine("tp")
-									else
-										env.funcs.pop("Player is being chased, teleporting to fake elevator instead of machine.")
-										toelevator(true, "tp")
-									end
+									env.funcs.tomachine("tp")
 								else
 									env.funcs.pop("Player is extracting, cannot teleport to machine.")
 								end
@@ -1274,8 +1264,6 @@ local function autofarm(state)
 			end
 
 			env.funcs.box("idling in fake elevator for " .. highestintresttime .. " seconds")
-
-			t(1)
 
 			for i = 1, highestintresttime do
 				env.funcs.box("resuming machine teleport loop in " .. (highestintresttime - i) .. " seconds")
