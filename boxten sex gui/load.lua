@@ -170,7 +170,8 @@ end)
 
 if setuperr then
 	warn("[Poppy]: Something went wrong. Try again later.")
-  return
+	error("[Shrimpo]: BOXTEN SEXGUI FAILED TO LOAD!!!: " .. setuperr)
+	return
 end
 
 yield(function() return env.setupcomplete and env.essentialsloaded end)
@@ -412,7 +413,7 @@ local function loadintro()
 		images = {
 			["ive made a severe and continuous lapse in my judgement.png"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/images/ive%20made%20a%20severe%20and%20continuous%20lapse%20in%20my%20judgement.png",
 			["heterochromia.png"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/images/heterochromia.png",
-      ["daschund.png"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/images/daschund.png"
+			["daschund.png"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/images/daschund.png"
 		},
 		videos = {
 			["dandelions forever.mp4"] = "https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/assets/videos/dandelions%20forever.mp4",
