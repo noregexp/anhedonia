@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 4
+local version = 5
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -607,7 +607,7 @@ local function setupplayeresp(state)
 				return label
 			end
 			
-			local healthlabel = addSideText("Health: ", espsettings.colors.player, 40)
+			local healthlabel = addSideText("Health: ", espsettings.colors.player, 14)
 			
 			local HEART_ICON = "rbxassetid://16790556042"
 			local maxHearts = 4
@@ -663,7 +663,7 @@ local function setupplayeresp(state)
 				end)
 			end
 
-			local staminalabel = addSideText("Stamina: ?/?", espsettings.colors.player, 40)
+			local staminalabel = addSideText("Stamina: ?/?", espsettings.colors.player, 14)
 
 			local staminaVal = char.Stats:FindFirstChild("Stamina")
 			local currentStaminaVal = char.Stats:FindFirstChild("CurrentStamina")
@@ -709,7 +709,7 @@ local function setupplayeresp(state)
 				return actual
 			end
 
-			local stealthLabel = addSideText("Stealth: ?", espsettings.colors.player, 40)
+			local stealthLabel = addSideText("Stealth: ?", espsettings.colors.player, 14)
 
 			local function updateStealth()
 				local val = getstealthvalue(char)
