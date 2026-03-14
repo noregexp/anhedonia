@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 5
+local version = 3
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -607,24 +607,36 @@ local function setupplayeresp(state)
 				return label
 			end
 			
-			local healthlabel = addSideText("Health: ", espsettings.colors.player, 14)
-			
 			local HEART_ICON = "rbxassetid://16790556042"
-			local maxHearts = 4
 
 			local healthRow = Instance.new("Frame")
-			healthRow.Size = UDim2.new(1, 0, 0, 15)
-			healthRow.Position = UDim2.new(1, 0, 0, 0)
+			healthRow.Size = UDim2.new(1, 0, 0, 13)
 			healthRow.BackgroundTransparency = 1
 			healthRow.LayoutOrder = 0
-			healthRow.Parent = healthlabel
+			healthRow.Parent = sideBillboard
 
-			local heartLayout = Instance.new("UIListLayout")
-			heartLayout.FillDirection = Enum.FillDirection.Horizontal
-			heartLayout.Padding = UDim.new(0, 2)
-			heartLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			heartLayout.VerticalAlignment = Enum.VerticalAlignment.Center
-			heartLayout.Parent = healthRow
+			local healthRowLayout = Instance.new("UIListLayout")
+			healthRowLayout.FillDirection = Enum.FillDirection.Horizontal
+			healthRowLayout.Padding = UDim.new(0, 4)
+			healthRowLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			healthRowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+			healthRowLayout.Parent = healthRow
+
+			local healthlabel = Instance.new("TextLabel")
+			healthlabel.Size = UDim2.fromOffset(48, 13)
+			healthlabel.BackgroundTransparency = 1
+			healthlabel.Text = "Health:"
+			healthlabel.Font = Enum.Font.FredokaOne
+			healthlabel.TextSize = 13
+			healthlabel.TextColor3 = espsettings.colors.player
+			healthlabel.TextXAlignment = Enum.TextXAlignment.Left
+			healthlabel.LayoutOrder = 0
+			healthlabel.Parent = healthRow
+
+			local stroke = Instance.new("UIStroke")
+			stroke.Color = Color3.fromRGB(255, 255, 255)
+			stroke.Thickness = 2
+			stroke.Parent = healthlabel
 
 			local heartIcons = {}
 			for i = 1, 4 do
@@ -663,7 +675,7 @@ local function setupplayeresp(state)
 				end)
 			end
 
-			local staminalabel = addSideText("Stamina: ?/?", espsettings.colors.player, 14)
+			local staminalabel = addSideText("Stamina: ?/?", espsettings.colors.player, 13)
 
 			local staminaVal = char.Stats:FindFirstChild("Stamina")
 			local currentStaminaVal = char.Stats:FindFirstChild("CurrentStamina")
@@ -709,11 +721,11 @@ local function setupplayeresp(state)
 				return actual
 			end
 
-			local stealthLabel = addSideText("Stealth: ?", espsettings.colors.player, 14)
+			local stealthLabel = addSideText("Stealth: ?", espsettings.colors.player, 13)
 
 			local function updateStealth()
 				local val = getstealthvalue(char)
-				stealthLabel.Text = "Stealth: " .. (val ~= nil and string.format("%.1f", val) or "?")
+				stealthLabel.Text = "Stealth: " .. (val ~= nil and tostring(math.round(val)) or "?")
 			end
 
 			updateStealth()
