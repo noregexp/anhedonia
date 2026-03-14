@@ -631,7 +631,6 @@ do
 	env.stuf.plrstats = nil
 
 	local function updcharrefs(char)
-		yield(function() return env.setupcomplete end)
 		if not char then return end
 		env.stuf.char = char
 
@@ -639,15 +638,27 @@ do
 		if statsfolder then
 			env.stuf.plrstats = statsfolder
 		else
-			env.funcs.pop("Player stats folder not found!")
+			if env.setupcomplete then
+				env.funcs.pop("Player stats folder not found!")
+			end
 		end
 
 		local hum = char:WaitForChild("Humanoid", 5)
-		if not hum then env.funcs.pop("Character Humanoid not found!") return end
+		if not hum then 
+			if env.setupcomplete then
+				env.funcs.pop("Character Humanoid not found!") 
+			end
+			return 
+		end
 		env.stuf.hum = hum
 
 		local root = char:WaitForChild("HumanoidRootPart", 5)
-		if not root then env.funcs.pop("Character RootPart not found!") return end
+		if not root then 
+			if env.setupcomplete then
+				env.funcs.pop("Character RootPart not found!") 
+			end
+			return 
+		end
 		env.stuf.root = root
 	end
 
