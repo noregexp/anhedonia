@@ -48,12 +48,11 @@ end
 
 -------------------------------------------------------------------------------------------------------------------------------
 
-fbconn, altfbconn, fogconn = nil
+fbconn, fogconn = nil
 ogl = {}
 
 function killfb()
 	if fbconn then fbconn:Disconnect() fbconn = nil end 
-	if altfbconn then altfbconn:Disconnect() altfbconn = nil end
 end
 
 function savelighting()
@@ -78,9 +77,8 @@ end
 
 -------------------------------------------------------------------------------------------------------------------------------
 
-function fb(alt)
+function fb()
 	l.Brightness = 2
-	l.ClockTime = alt and 0 or 14
 	l.FogEnd = 100000
 	l.GlobalShadows = false
 	l.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
@@ -90,24 +88,8 @@ end
 
 function togglefb(state)
 	if state then
-		if altfbconn then env.essentials.library.update("Alt fullbright", false) end
 		killfb() savelighting()
 		fbconn = rs.Heartbeat:Connect(fb)
-	else
-		killfb()
-		relighting()
-	end
-end
-
--------------------------------------------------------------------------------------------------------------------------------
-
-function toggleafb(state)
-	if state then
-		if fbconn then env.essentials.library.update("Fullbright", false) end
-		killfb() savelighting()
-		altfbconn = rs.Heartbeat:Connect(function()
-			fb(true)
-		end)
 	else
 		killfb()
 		relighting()
@@ -1256,7 +1238,6 @@ local section = {
 			killfb() 
 			env.essentials.library.update("Fullbright", false)
 			env.essentials.library.update("No fog", false)
-			env.essentials.library.update("Alt fullbright", false)
 			env.essentials.library.update("Daytime", false)
 			relighting()
 		end
@@ -1300,21 +1281,6 @@ local section = {
 
 		callback = function(state) 
 			togglefb(state)
-		end
-	},
-	{ type = "toggle", title = "Alt fullbright", desc = "Makes everything less darker.",
-		commandcat = "Visuals",
-
-		encommands = {"alternativefullbright"},
-		enaliases = {"afb"},
-		encommanddesc = "Makes everything less darker",
-
-		discommands = {"unalternativefullbright"},
-		disaliases = {"unafb"},
-		discommanddesc = "Disables alternative fullbright",
-
-		callback = function(state) 
-			toggleafb(state)
 		end
 	},
 	{ type = "toggle", title = "Disable 3D rendering", desc = "Disables 3d rendering.",
