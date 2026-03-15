@@ -48,7 +48,10 @@ end
 
 local autoescapewormconn
 local autoescapewormdelay = 0.1
+local autoescapingsquirm = false
 local function autoescape(state)
+	autoescapingsquirm = state
+	
 	if state then
 		local function tap(dir)
 			rst.Events.TwistedSquirmGrab:FireServer(unpack({"Struggle", dir}))
@@ -133,7 +136,7 @@ local function autoteleporttoelevator(state)
 		if condition == "Instant" or not condition then
 			if env.stuf.actionqueuerunning then
 				spwn(function()
-					while env.stuf.actionqueuerunning do t() end
+					yield(function() return not env.stuf.actionqueuerunning end)
 					toelevator(nil, "tp")
 				end)
 			else
@@ -441,7 +444,9 @@ end
 
 -------------------------------------------------------------------------------------------------------------------------------
 
+local instantcalibrating = false
 local oldskillcheckinvoc
+
 spwn(function() 
 	if env.stuf.inrun then
 		if getcallbackvalue then 
@@ -453,6 +458,8 @@ spwn(function()
 end)
 
 function autocalibration2(state)
+	instantcalibrating = state
+	
 	if env.stuf.inrun then
 		local hi = rst.Events.SkillcheckUpdate
 		if state then
@@ -1172,7 +1179,10 @@ local allactiontitles = {
 -------------------------------------------------------------------------------------------------------------------------------
 
 local autoforcequitmachineconn
+local autoforcequittingmachine = false
 local function autoforcequitmachine(state)
+	autoforcequittingmachine = state
+	
 	if state then 
 		if not autoforcequitmachineconn then 
 			autoforcequitmachineconn = rst.StoryEvents.Spotted.OnClientEvent:Connect(function()
@@ -1196,7 +1206,6 @@ env.stuf.afe = {
 	running = false,
 	priority = {},
 	maxitemcap = 3,
-	itemmaxdist = 5,
 	machmaxdist = 30,
 	preset = {"Default"},
 	actiontrigger = {"Map fully loaded"},
@@ -1222,6 +1231,25 @@ local function autofarm(state)
 			env.funcs.pop("The autofarm is already running!")
 			return 
 		end
+		
+		env.stuf.afe.saved = {
+			autoteleportingtoelevator = autoteleportingtoelevator,
+			autoteleportingtoelevatorcondition = autoteleporttoelevatorconditions,
+			autoteleportingtomachine = autoteleportingtomachine,
+			autoteleporttomachineconditions = autoteleporttomachineconditions,
+			instantcalibrating = instantcalibrating,
+			autoescapingsquirm = autoescapingsquirm,
+			autovoting = autovotebestcardenabled,
+			autousingitems = autousingitems,
+			autousingitemsbehavior = autouseitemsbehavior,
+			autopickingupcapsules = autoactions.autopickupallcapsules.enabled,
+			autopickinguptapes = autoactions.autopickupalltapes.enabled,
+			autopickingupheals = autoactions.autopickupallheals.enabled,
+			autopickingupextractionitems = autoactions.autopickupallextitems.enabled,
+			autoencounteringtwisteds = autoactions.autoencountertwisteds.enabled,
+			performactionstrigger = env.stuf.afe.actiontrigger,
+			autoforcequittingmachine = autoforcequittingmachine,
+		}
 
 		env.stuf.afe.running = true
 
@@ -1412,6 +1440,23 @@ local function autofarm(state)
 		env.stuf.afe.conns = {}
 
 		env.funcs.box("disconnected all autofarm threads and conns")
+
+		env.essentials.library.update("Auto teleport to elevator", env.stuf.afe.saved.autoteleportingtoelevator)
+		env.essentials.library.update("Auto teleport to elevator condition", env.stuf.afe.saved.autoteleportingtoelevatorcondition)
+		env.essentials.library.update("Auto teleport to machine", env.stuf.afe.saved.autoteleportingtomachine)
+		env.essentials.library.update("Auto teleport to machine condition", env.stuf.afe.saved.autoteleporttomachineconditions)
+		env.essentials.library.update("Instant calibration success", env.stuf.afe.saved.instantcalibrating)
+		env.essentials.library.update("Auto escape Squirm", env.stuf.afe.saved.autoescapingsquirm)
+		env.essentials.library.update("Auto vote best card", env.stuf.afe.saved.autovoting)
+		env.essentials.library.update("Auto use items", env.stuf.afe.saved.autousingitems)
+		env.essentials.library.update("Auto use items behavior", env.stuf.afe.saved.autousingitemsbehavior)
+		env.essentials.library.update("Auto pick up all Research Capsules", env.stuf.afe.saved.autopickingupcapsules)
+		env.essentials.library.update("Auto pick up all Tapes", env.stuf.afe.saved.autopickinguptapes)
+		env.essentials.library.update("Auto pick up all heals", env.stuf.afe.saved.autopickingupheals)
+		env.essentials.library.update("Auto pick up all extraction items", env.stuf.afe.saved.autopickingupextractionitems)
+		env.essentials.library.update("Auto encounter Twisteds", env.stuf.afe.saved.autoencounteringtwisteds)
+		env.essentials.library.update("Perform actions trigger", env.stuf.afe.saved.performactionstrigger)
+		env.essentials.library.update("Auto force quit machine", env.stuf.afe.saved.autoforcequittingmachine)
 	end
 end
 
@@ -1436,16 +1481,6 @@ local section = {
 
 		callback = function(value)
 			env.stuf.afe.maxitemcap = value
-		end
-	},
-	{ type = "slider", title = "Item max distance for autofarm", desc = "Avoids items when a Twisted is within the set distance of the item.", 
-		min = 0, 
-		max = 100, 
-		default = env.stuf.afe.itemmaxdist, 
-		step = 1,
-
-		callback = function(value)
-			env.stuf.afe.itemmaxdist = value
 		end
 	},
 	{ type = "slider", title = "Machine max distance for autofarm", desc = "Avoids machines when a Twisted is within the set distance of the machine.", 
