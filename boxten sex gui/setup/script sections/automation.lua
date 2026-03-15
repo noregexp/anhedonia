@@ -778,6 +778,7 @@ local function autouseitems(state)
 				table.insert(autouseitemsconns, slot.Changed:Connect(oninventorychanged))
 			end
 		end
+		
 		table.insert(autouseitemsconns, inventory.ChildAdded:Connect(function(child)
 			if child.Name:find("Slot") then
 				table.insert(autouseitemsconns, child.Changed:Connect(oninventorychanged))
@@ -806,14 +807,16 @@ local function autouseitems(state)
 
 	table.insert(autouseitemsconns, env.stuf.char.Decoding.Changed:Connect(function()
 		if not autousingitems then return end
+		
 		local stats = env.funcs.getstats("player", env.stuf.char)
 		if not stats then return end
-		local behavior = autouseitemsbehavior
-		if behavior == "Instant" then
+				
+		if autouseitemsbehavior == "Instant" then
 			useanyitem(stats)
-		elseif behavior == "When necessary" then
+		elseif autouseitemsbehavior == "When necessary" then
 			usecategoryitems(stats, autouseitemcats.onmachine)
-		elseif behavior == "1 second delay" then
+			
+		elseif autouseitemsbehavior == "1 second delay" then
 			task.delay(1, function()
 				if not autousingitems then return end
 				local freshstats = env.funcs.getstats("player", env.stuf.char)
@@ -824,16 +827,19 @@ local function autouseitems(state)
 
 	table.insert(autouseitemsconns, env.stuf.char.Stats.CurrentStamina.Changed:Connect(function(val)
 		if not autousingitems then return end
+		
 		local stats = env.funcs.getstats("player", env.stuf.char)
 		if not stats then return end
-		local behavior = autouseitemsbehavior
-		if behavior == "Instant" then
+		
+		if autouseitemsbehavior == "Instant" then
 			useanyitem(stats)
-		elseif behavior == "When necessary" then
+			
+		elseif autouseitemsbehavior == "When necessary" then
 			if env.stuf.char.Stats.CurrentStamina.Value < 20 then
 				usecategoryitems(stats, autouseitemcats.stamina)
 			end
-		elseif behavior == "1 second delay" then
+			
+		elseif autouseitemsbehavior == "1 second delay" then
 			task.delay(1, function()
 				if not autousingitems then return end
 				local freshstats = env.funcs.getstats("player", env.stuf.char)
@@ -844,16 +850,19 @@ local function autouseitems(state)
 
 	table.insert(autouseitemsconns, env.stuf.char:FindFirstChildOfClass("Humanoid").HealthChanged:Connect(function(health)
 		if not autousingitems then return end
+		
 		local stats = env.funcs.getstats("player", env.stuf.char)
 		if not stats then return end
-		local behavior = autouseitemsbehavior
-		if behavior == "Instant" then
+		
+		if autouseitemsbehavior == "Instant" then
 			useanyitem(stats)
-		elseif behavior == "When necessary" then
+			
+		elseif autouseitemsbehavior == "When necessary" then
 			if health < env.stuf.hum.MaxHealth then
 				usecategoryitems(stats, autouseitemcats.heal)
 			end
-		elseif behavior == "1 second delay" then
+			
+		elseif autouseitemsbehavior == "1 second delay" then
 			task.delay(1, function()
 				if not autousingitems then return end
 				local freshstats = env.funcs.getstats("player", env.stuf.char)
@@ -909,7 +918,6 @@ local function sprinttap()
 					end
 				end
 			end
-
 			t()
 		end
 
