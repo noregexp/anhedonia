@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 3
+local version = 4
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -481,7 +481,7 @@ local function setupplayeresp(state)
 
 			local nameSection = Instance.new("Frame")
 			nameSection.Size = UDim2.fromOffset(billboardWidth, nameRowHeight)
-			nameSection.Position = UDim2.fromOffset(8, 68)
+			nameSection.Position = UDim2.fromOffset(12, 68)
 			nameSection.BackgroundTransparency = 1
 			nameSection.Parent = fullBillboard
 
@@ -526,7 +526,7 @@ local function setupplayeresp(state)
 
 			local invSection = Instance.new("Frame")
 			invSection.Size = UDim2.fromOffset(billboardWidth, billboardHeight)
-			invSection.Position = UDim2.fromOffset(8, totalBillboardHeight - billboardHeight - 88)
+			invSection.Position = UDim2.fromOffset(12, totalBillboardHeight - billboardHeight - 88)
 			invSection.BackgroundTransparency = 1
 			invSection.Parent = fullBillboard
 
@@ -638,7 +638,7 @@ local function setupplayeresp(state)
 
 			local stroke = Instance.new("UIStroke")
 			stroke.Color = Color3.fromRGB(255, 255, 255)
-			stroke.Thickness = 2
+			stroke.Thickness = mobile and 1 or 2
 			stroke.Parent = healthlabel
 
 			local heartIcons = {}
@@ -809,7 +809,7 @@ local function setupplayeresp(state)
 
 			local tapesstroke = Instance.new("UIStroke")
 			tapesstroke.Color = Color3.fromRGB(255, 255, 255)
-			tapesstroke.Thickness = 2
+			tapesstroke.Thickness = mobile and 1 or 2
 			tapesstroke.Parent = tapescount
 
 			local function updateTapes()
