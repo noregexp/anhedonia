@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 5
+local version = 3
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -481,7 +481,7 @@ local function setupplayeresp(state)
 
 			local nameSection = Instance.new("Frame")
 			nameSection.Size = UDim2.fromOffset(billboardWidth, nameRowHeight)
-			nameSection.Position = UDim2.fromOffset(6, 68)
+			nameSection.Position = UDim2.fromOffset(8, 68)
 			nameSection.BackgroundTransparency = 1
 			nameSection.Parent = fullBillboard
 
@@ -498,7 +498,7 @@ local function setupplayeresp(state)
 
 			local border1 = Instance.new("UIStroke")
 			border1.Color = Color3.fromRGB(255, 255, 255)
-			border1.Thickness = 2
+			border1.Thickness = mobile and 1 or 2
 			border1.Parent = displayname
 
 			local username = Instance.new("TextLabel")
@@ -514,7 +514,7 @@ local function setupplayeresp(state)
 
 			local border2 = Instance.new("UIStroke")
 			border2.Color = Color3.fromRGB(255, 255, 255)
-			border2.Thickness = 2
+			border2.Thickness = mobile and 1 or 2
 			border2.Parent = username
 			
 			local icon = Instance.new("ImageLabel")
@@ -526,7 +526,7 @@ local function setupplayeresp(state)
 
 			local invSection = Instance.new("Frame")
 			invSection.Size = UDim2.fromOffset(billboardWidth, billboardHeight)
-			invSection.Position = UDim2.fromOffset(6, totalBillboardHeight - billboardHeight - 70)
+			invSection.Position = UDim2.fromOffset(8, totalBillboardHeight - billboardHeight - 88)
 			invSection.BackgroundTransparency = 1
 			invSection.Parent = fullBillboard
 
@@ -604,7 +604,7 @@ local function setupplayeresp(state)
 
 				local stroke = Instance.new("UIStroke")
 				stroke.Color = Color3.fromRGB(255, 255, 255)
-				stroke.Thickness = 2
+				stroke.Thickness = mobile and 1 or 2
 				stroke.Parent = label
 
 				return label
