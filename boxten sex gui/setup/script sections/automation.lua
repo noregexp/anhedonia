@@ -1289,7 +1289,7 @@ local function autofarm(state)
 					if not env.stuf.actionqueuerunning then
 						if not env.funcs.getgamestats().panicmode then
 							if env.funcs.getgamestats().flooractive then
-								if env.funcs.floorunloading() then
+								if not env.funcs.floorunloading() then
 									if not env.funcs.getstats("player", env.stuf.char).extracting then
 										env.funcs.tomachine("tp")
 									else
