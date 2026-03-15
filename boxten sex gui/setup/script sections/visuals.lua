@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 4
+local version = 3
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -38,6 +38,13 @@ local clipboard = setclipboard or toclipboard or set_clipboard or (Clipboard and
 local folder = "Bоxten Sеx GUI"
 local env = getgenv.BSGUI
 local mobile = uis.TouchEnabled
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+-- helpers
+local function yield(this)
+	repeat t() until this() 
+end
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -407,6 +414,11 @@ end
 local function setupplayeresp(state)
 	if esphandler.player.conn then esphandler.player.conn:Disconnect() esphandler.player.conn = nil end
 	clearhls("player")
+	
+	for _, billboards in pairs(esphandler.player.ui) do
+		if billboards.name then billboards.name:Destroy() end
+	end
+	esphandler.player.ui = {}
 
 	if not state then return end
 
@@ -837,10 +849,6 @@ local function setupplayeresp(state)
 	esphandler.player.conn = plrs.PlayerAdded:Connect(function(player)
 		if esphandler.player.enabled then apply(player) end
 	end)
-end
-
-local function yield(this)
-	repeat t() until this()
 end
 
 local function setuptwistedesp(state)
