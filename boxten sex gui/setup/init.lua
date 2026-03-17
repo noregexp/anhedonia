@@ -1161,16 +1161,16 @@ do
 			local troot = obj:FindFirstChild("HumanoidRootPart") or obj.PrimaryPart or obj:FindFirstChildWhichIsA("BasePart")
 			local chaser = obj:FindFirstChild("Chaser")
 
-			local hearingrad, intrestrad, hitboxrad, visionrad, intresttime, LoS, hitcooldown
-			if chaser then
-				hearingrad = chaser:FindFirstChild("HearingRadius").Value or 0
-				intrestrad = chaser:FindFirstChild("InstantRadius").Value or 0
-				hitboxrad = chaser:FindFirstChild("HearingRadius").Value or 0
-				visionrad = chaser:FindFirstChild("VisionRadius").Value or 0
+			local hearingrad, intrestrad, hitboxrad, visionrad, intresttime, LoS, hitcooldown = 0, 0, 0, 0, 0, 0, 0
+			if chaser and not name:find("Connie") and not name:find("Blot") and not name:find("Squirm") then
+				hearingrad = chaser:FindFirstChild("HearingRadius").Value
+				intrestrad = chaser:FindFirstChild("InstantRadius").Value
+				hitboxrad = chaser:FindFirstChild("HearingRadius").Value
+				visionrad = chaser:FindFirstChild("VisionRadius").Value
 
-				intresttime = chaser:FindFirstChild("InterestTime").Value or 0
-				LoS = chaser:FindFirstChild("LineOfSight").Value or 0
-				hitcooldown = chaser:FindFirstChild("HitCooldown").Value or 0
+				intresttime = chaser:FindFirstChild("InterestTime").Value
+				LoS = chaser:FindFirstChild("LineOfSight").Value
+				hitcooldown = chaser:FindFirstChild("HitCooldown").Value
 			end
 
 			local chasing = obj:FindFirstChild("ChasingValue")
