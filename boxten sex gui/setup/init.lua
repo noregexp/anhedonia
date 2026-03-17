@@ -736,6 +736,14 @@ do
 		end)
 	end
 
+  env.stuf.skycatcher = Instance.new("Part")
+  env.stuf.skycatcher.Size = Vector3.new(5000, 1, 5000)
+  env.stuf.skycatcher.Position = Vector3.new(0, 2000, 0)
+  env.stuf.skycatcher.Anchored = true
+  env.stuf.skycatcher.BrickColor = BrickColor.new("Medium stone grey")
+  env.stuf.skycatcher.Transparency = 0.6
+  env.stuf.skycatcher.Parent = ws
+
 	-- ui
 	env.stuf.mainframe, env.stuf.mainframesections = nil
 	env.stuf.togglebutton, env.stuf.togglebuttondrag = nil
