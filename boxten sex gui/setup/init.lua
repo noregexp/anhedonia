@@ -44,6 +44,7 @@ local isfolder = (syn and syn.isfolder) or isfolder
 local makefolder = (syn and syn.makefolder) or makefolder
 local identifyexecutor = (syn and syn.identifyexecutor) or identifyexecutor
 local clipboard = setclipboard or toclipboard or set_clipboard or (Clipboard and Clipboard.set)
+local req = request or http_request or (syn and syn.request)
 
 local folder = "Bоxten Sеx GUI"
 local env = getgenv.BSGUI
@@ -834,6 +835,30 @@ do
 	end
 
 	-- utility
+  local function sendwebhook(url, data) -- self explanatory
+    if not req then
+      return false
+    end
+
+    local body = https:JSONEncode(data)
+
+    local success, response = pcall(function()
+    return req({
+      Url = url,
+      Method = "POST",
+      Headers = {["Content-Type"] = "application/json"},
+      Body = body
+      })
+    end)
+
+    if not success then
+      env.funcs.pop("Webhook failed:", response)
+      return false
+    end
+
+    return true, response
+  end
+
 	function env.funcs.recursivels(link, frompath, atts) -- replaces loadstring, tries to load the link 3 times if unsuccessful
 		local atts = atts or 5
 		local start = os.clock()
