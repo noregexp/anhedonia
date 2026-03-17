@@ -61,23 +61,29 @@ local function toskycatcher(off, method)
 end
 
 local function nearobstacle()
-  if env.stuf.currentroom then
-    if env.stuf.freearea then
-      for _, obj in ipairs(env.stuf.freearea:GetChildren()) do
-        if obj.Name:find("Tendril") then
-          return true
-        end
-      end
-    end
+	if not env.stuf.currentroom then return false end
 
-    for _, obj in ipairs(env.stuf.currentroom:GetChildren()) do
-      if obj.Name:find("BlotHand") then
-        return true
-      end
-    end
-  end
+	if env.stuf.freearea then
+		for _, obj in ipairs(env.stuf.freearea:GetChildren()) do
+			if obj.Name:find("Tendril") and obj:IsA("BasePart") then
+				local dist = (obj.Position - env.stuf.root.Position).Magnitude
+				if dist <= 30 then
+					return true
+				end
+			end
+		end
+	end
 
-  return false
+	for _, obj in ipairs(env.stuf.currentroom:GetChildren()) do
+		if obj.Name:find("BlotHand") and obj:IsA("BasePart") then
+			local dist = (obj.Position - env.stuf.root.Position).Magnitude
+			if dist <= 30 then
+				return true
+			end
+		end
+	end
+
+	return false
 end
 
 -------------------------------------------------------------------------------------------------------------------------------
@@ -1380,7 +1386,7 @@ local function autofarm(state)
 				end
 			end
 
-			env.funcs.box("idling in fake elevator for " .. highestintresttime .. " seconds")
+			env.funcs.box("idling in the sky for " .. highestintresttime .. " seconds")
       t(1)
 
 			for i = 1, highestintresttime do
