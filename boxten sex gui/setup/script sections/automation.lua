@@ -44,6 +44,42 @@ local function yield(this)
 	repeat t() until this() 
 end
 
+local function toskycatcher(off, method)
+  method = method or "tp"
+  local basecf = env.stuf.skycatcher.CFrame
+
+  if env.stuf.root then
+    if off then
+      local relative = basecf:PointToObjectSpace(hrp.Position)
+      local finaldestination = basecf:PointToWorldSpace(relative + off)
+
+      env.funcs.moveplr(CFrame.new(finaldestination + Vector3.new(0, 2.7, 0)), method)
+    end
+  else
+    env.funcs.moveplr(baseCF * CFrame.new(0, 2.7, 0), method)
+  end
+end
+
+local function nearobstacle()
+  if env.stuf.currentroom then
+    if env.stuf.freearea then
+      for _, obj in ipairs(env.stuf.freearea:GetChildren()) do
+        if obj.Name:find("Tendril") then
+          return true
+        end
+      end
+    end
+
+    for _, obj in ipairs(env.stuf.currentroom:GetChildren()) do
+      if obj.Name:find("BlotHand") then
+        return true
+      end
+    end
+  end
+
+  return false
+end
+
 -------------------------------------------------------------------------------------------------------------------------------
 
 local autoescapewormconn
@@ -54,7 +90,7 @@ local function autoescape(state)
 	
 	if state then
 		local function tap(dir)
-			rst.Events.TwistedSquirmGrab:FireServer(unpack({"Struggle", dir}))
+			rst.Events.TwistedSquirmGrab:FireServer("Struggle", dir))
 		end
 
 		local uivisible
@@ -1327,11 +1363,10 @@ local function autofarm(state)
 			tplooppause = true
 
 			for _ = 1, 20 do
-				toelevator(true, "tp")
-				t()
+        local dodge = nearobstacle() and 30 or 0
+        toskycatcher(dodge, "tp")
+				t(0.1)
 			end
-
-			t(2)
 
 			local highestintresttime = 5
 			if env.stuf.twisteds then
@@ -1346,6 +1381,7 @@ local function autofarm(state)
 			end
 
 			env.funcs.box("idling in fake elevator for " .. highestintresttime .. " seconds")
+      t(1)
 
 			for i = 1, highestintresttime do
 				env.funcs.box("resuming machine teleport loop in " .. (highestintresttime - i) .. " seconds")
