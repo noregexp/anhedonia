@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 6
+local version = 5
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -54,9 +54,9 @@ local function toskycatcher(off, method)
       local finaldestination = basecf:PointToWorldSpace(relative + off)
 
       env.funcs.moveplr(CFrame.new(finaldestination + Vector3.new(0, 2.7, 0)), method)
+    else
+      env.funcs.moveplr(basecf * CFrame.new(0, 2.7, 0), method)
     end
-  else
-    env.funcs.moveplr(baseCF * CFrame.new(0, 2.7, 0), method)
   end
 end
 
