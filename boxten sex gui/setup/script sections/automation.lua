@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 5
+local version = 6
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -85,7 +85,6 @@ end
 local autoescapewormconn
 local autoescapewormdelay = 0.1
 local autoescapingsquirm = false
-
 local function autoescape(state)
 	autoescapingsquirm = state
 	
@@ -1364,7 +1363,7 @@ local function autofarm(state)
 			tplooppause = true
 
 			for _ = 1, 20 do
-        local dodge = nearobstacle() and 30 or 0
+        local dodge = nearobstacle() and Vector3.new(30, 0, 30) or nil
         toskycatcher(dodge, "tp")
 				t(0.1)
 			end
