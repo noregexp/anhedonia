@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 6
+local version = 5
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -50,7 +50,7 @@ local function toskycatcher(off, method)
 
   if env.stuf.root then
     if off then
-      local relative = basecf:PointToObjectSpace(hrp.Position)
+      local relative = basecf:PointToObjectSpace(env.stuf.root.Position)
       local finaldestination = basecf:PointToWorldSpace(relative + off)
 
       env.funcs.moveplr(CFrame.new(finaldestination + Vector3.new(0, 2.7, 0)), method)
