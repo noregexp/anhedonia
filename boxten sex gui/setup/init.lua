@@ -739,10 +739,10 @@ do
 
   env.stuf.skycatcher = Instance.new("Part")
   env.stuf.skycatcher.Size = Vector3.new(5000, 1, 5000)
-  env.stuf.skycatcher.Position = Vector3.new(0, 500, 0)
+  env.stuf.skycatcher.Position = Vector3.new(-747, 250, 95)
   env.stuf.skycatcher.Anchored = true
   env.stuf.skycatcher.BrickColor = BrickColor.new("Medium stone grey")
-  env.stuf.skycatcher.Transparency = 0.6
+  env.stuf.skycatcher.Transparency = 0.5
   env.stuf.skycatcher.Parent = ws
 
 	-- ui
