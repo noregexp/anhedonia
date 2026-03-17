@@ -90,7 +90,7 @@ local function autoescape(state)
 	
 	if state then
 		local function tap(dir)
-			rst.Events.TwistedSquirmGrab:FireServer("Struggle", dir))
+			rst.Events.TwistedSquirmGrab:FireServer("Struggle", dir)
 		end
 
 		local uivisible
