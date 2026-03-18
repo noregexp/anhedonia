@@ -959,7 +959,7 @@ local function setuptwistedesp(state)
 			end
 
 			local researchlabel = addSideText("Research: 0%", espsettings.colors.twisted)
-			local research = rst:FindFirstChild("PlayerData"):FindFirstChild(env.stuf.plrid):FindFirstChild("Research"):FindFirstChild(twisted)
+			local research = rst:FindFirstChild("PlayerData"):FindFirstChild(env.stuf.plrid):FindFirstChild("Research"):FindFirstChild(twisted.Name)
 
 			local function updateresearch()
 				local target = research and research.Value or 0
