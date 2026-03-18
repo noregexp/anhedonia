@@ -1491,7 +1491,7 @@ local function autofarm(state)
 				if slot then
 					local model = slot:FindFirstChildWhichIsA("Model", true)
 					if model and not env.stuf.buyaurablacklist[model.Name] then
-						fireproximityprompt(model:FindFirstChildWhichIsA("ProximityPrompt"))
+						fireproximityprompt(model:FindFirstChild("Prompt"):FindFirstChildWhichIsA("ProximityPrompt"))
 					end
 				end
 			end
