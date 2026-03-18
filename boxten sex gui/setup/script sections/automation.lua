@@ -1543,7 +1543,8 @@ local function autofarm(state)
 					end
 				end
 			end
-		end
+		end)
+		table.insert(env.stuf.afe.conns, floorpreppingconn)
 
 	else
 		env.funcs.box("autofarm stopped")
