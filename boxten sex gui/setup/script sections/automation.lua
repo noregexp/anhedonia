@@ -9,7 +9,7 @@
 
 ---------------------------------------------------------------------------------------------------------------------------]]--
 
-local version = 5
+local version = 6
 
 -------------------------------------------------------------------------------------------------------------------------------
 
@@ -1491,7 +1491,7 @@ local function autofarm(state)
 				if slot then
 					local model = slot:FindFirstChildWhichIsA("Model", true)
 					if model and not env.stuf.buyaurablacklist[model.Name] then
-						fireproximityprompt(model)
+						fireproximityprompt(model:FindFirstChildWhichIsA("ProximityPrompt"))
 					end
 				end
 			end
@@ -1503,7 +1503,7 @@ local function autofarm(state)
 				local sodadetected
 
 				for i = 1, 4 do
-					local item = env.funcs.getstats("player", env.stuf.char)[slot .. i]
+					local item = env.funcs.getstats("player", env.stuf.char)["slot" .. i]
 
 					if item.Name == "Pop" or item.Name == "PopBottle" then
 						sodadetected = true
