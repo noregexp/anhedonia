@@ -93,6 +93,7 @@ end
 local autoescapewormconn
 local autoescapewormdelay = 0.1
 local autoescapingsquirm = false
+
 local function autoescape(state)
 	autoescapingsquirm = state
 	
