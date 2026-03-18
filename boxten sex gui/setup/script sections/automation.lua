@@ -1328,14 +1328,29 @@ local function autofarm(state)
 
 		env.stuf.afe.tploopthread = spwn(function()
 			env.funcs.box("machine teleport loop started")
+	
+			local lastPos = nil
 
 			while env.stuf.afe.running do
+				local char = env.stuf.char
+				local hrp = char and char:FindFirstChild("HumanoidRootPart")
+				local currentPos = hrp and hrp.Position
+
 				if not tplooppause then
+					if env.stuf.actionqueuerunning then
+						if lastPos and currentPos and (lastPos - currentPos).Magnitude < 0.1 then
+							env.funcs.pop("Action queue stalled (No movement). Forcing teleport.")
+							env.stuf.actionqueuerunning = false
+						else
+							env.funcs.pop("Auto action queue is still running, cannot teleport to machine.")
+						end
+					end
+
 					if not env.stuf.actionqueuerunning then
 						if not env.funcs.getgamestats().panicmode then
 							if env.funcs.getgamestats().flooractive then
 								if not env.funcs.floorunloading() then
-									if not env.funcs.getstats("player", env.stuf.char).extracting then
+									if not env.funcs.getstats("player", char).extracting then
 										env.funcs.tomachine("tp")
 									else
 										env.funcs.pop("Player is extracting, cannot teleport to machine.")
@@ -1350,12 +1365,12 @@ local function autofarm(state)
 							env.funcs.pop("Panic mode is on, cannot teleport to machine. Teleporting to elevator instead.")
 							toelevator(nil, "tp")
 						end
-					else
-						env.funcs.pop("Auto action queue is still running, cannot teleport to machine.")
 					end
 				else
 					env.funcs.pop("Teleport loop is paused, cannot teleport to machine.")
 				end
+
+				lastPos = currentPos
 				t(3)
 			end
 		end)
