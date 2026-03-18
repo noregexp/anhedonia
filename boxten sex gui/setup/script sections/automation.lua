@@ -26,11 +26,13 @@ local uis = FindFirstChildOfClass(game, "UserInputService")
 local ts = FindFirstChildOfClass(game, "TweenService")
 local rs = FindFirstChildOfClass(game, "RunService")
 local rst = FindFirstChildOfClass(game, "ReplicatedStorage")
+local vim = game:GetService("VirtualInputManager") -- cant use findfirstchildofclass for this one
 local plrs = FindFirstChildOfClass(game, "Players")
 
 local getgenv = getgenv() or _G
 local fireproximityprompt = (syn and syn.fireproximityprompt) or fireproximityprompt
 local firesignal = (syn and syn.firesignal) or firesignal
+local hiddenui = (syn and syn.gethui) or gethui() or FindFirstChildOfClass(game, "CoreGui")
 local getcallbackvalue = (syn and syn.getcallbackvalue) or getcallbackvalue
 
 local folder = "Bоxten Sеx GUI"
@@ -1494,6 +1496,54 @@ local function autofarm(state)
 			end
 		end)
 		table.insert(env.stuf.afe.conns, dandysellingconn)
+
+		local floorpreppingconn = env.stuf.gameinfo.Message.Changed:Connect(function(val)
+			if val:find("Generating new") then
+				local sodadetected
+
+				for i = 1, 4 do
+					local item = env.funcs.getstats("player", env.stuf.char)[slot .. i]
+
+					if item.Name == "Pop" or item.Name == "PopBottle" then
+						sodadetected = true
+					end
+				end
+
+				if sodadetected then
+					env.funcs.pop("Soda detected in inventory, attempting to get rid of it.")
+					local infstamwasenabled = env.stuf.infinitestaminaenabled
+					local spr = hiddenui:FindFirstChild("SprintEvent") or rst.Events:WaitForChild("SprintEvent")
+
+					spwn(function()
+						if spr then spr.Parent = rst.Events spr:FireServer(false) end
+					end)
+
+					spr = rst.Events.SprintEvent
+					if spr then spr:FireServer(true) end
+
+					spwn(function() 
+						vim:SendKeyEvent(true, Enum.KeyCode.W, false, uis) 
+					end)
+
+					t(0.5)
+
+					spwn(function() 
+						vim:SendKeyEvent(false, Enum.KeyCode.W, false, uis) 
+					end)
+
+					if spr then spr:FireServer(false) end
+
+					env.funcs.useitem("all")
+
+					if infstamwasenabled then
+						spwn(function()
+							local spr = rst.Events:FindFirstChild("SprintEvent") or rst.Events:WaitForChild("SprintEvent")
+							if spr then spr:FireServer(false) spr.Parent = hiddenui end
+						end)
+					end
+				end
+			end
+		end
 
 	else
 		env.funcs.box("autofarm stopped")
