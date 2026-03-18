@@ -1621,11 +1621,11 @@ end
 
 -------------------------------------------------------------------------------------------------------------------------------
 
-local buyaurablacklist = {}
+env.stuf.buyaurablacklist = {}
 local buyauraenabled = false
 local buyaurathread = nil
 
-local buynamemap = {
+env.stuf.buynamemap = {
 	["Air Horn"]               = "AirHorn",
 	["Bandage"]                = "Bandage",
 	["Bonbon"]                 = "Bonbon",
@@ -1669,11 +1669,11 @@ local function buyaura(state)
 				for _, slot in ipairs(store:GetChildren()) do
 					if slot.Name:lower():match("^slot") then
 						local itemModel = slot:FindFirstChildWhichIsA("Model")
-						if itemModel and not buyaurablacklist[itemModel.Name] then
+						if itemModel and not env.stuf.buyaurablacklist[itemModel.Name] then
 							local promptPart = itemModel:FindFirstChild("Prompt")
 							if promptPart then
 								local prompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
-								if prompt and prompt.Enabled then
+								if prompt then
 									fireproximityprompt(prompt)
 								end
 							end
@@ -1873,10 +1873,10 @@ local section = {
 		multiselect = true,
 
 		callback = function(selected)
-			buyaurablacklist = {}
+			env.stuf.buyaurablacklist = {}
 			for _, label in ipairs(selected) do
-				local mapped = buynamemap[label] or label
-				buyaurablacklist[mapped] = true
+				local mapped = env.stuf.buynamemap[label] or label
+				env.stuf.buyaurablacklist[mapped] = true
 			end
 		end
 	},
