@@ -1069,7 +1069,9 @@ do
   end
 
 	function env.funcs.getstats(type, obj, stat) -- returns a table full of the target objects stats, can fetch the floor, item, machine, twisted, and another players stats
-		if not obj:IsA("Model") then env.funcs.shr("INVALID OBJECT, IDIOT!!!") end
+		if not obj:IsA("Model") then env.funcs.shr("INVALID OBJECT, IDIOT!!!") return end
+		if not obj then env.funcs.shr(type:upper() .. " OBJECT NOT FOUND.") return end
+
 		local name = obj.Name
 		local result
 
