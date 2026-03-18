@@ -23,6 +23,7 @@ local FindFirstChildOfClass = getins(game, "FindFirstChildOfClass")
 
 local ws = FindFirstChildOfClass(game, "Workspace")
 local l = FindFirstChildOfClass(game, "Lighting")
+local rst = FindFirstChildOfClass(game, "ReplicatedStorage")
 local uis = FindFirstChildOfClass(game, "UserInputService")
 local rs = FindFirstChildOfClass(game, "RunService")
 local plrs = FindFirstChildOfClass(game, "Players")
@@ -856,7 +857,7 @@ local function setuptwistedesp(state)
 
 			esphandler.twisted.hls[twisted] = newhl(twisted, espsettings.colors.twisted)
 			
-			local hrp = twisted:WaitForChild("HumanoidRootPart", 10)
+			local hrp = env.funcs.getstats("twisted", twisted).troot
 			if not hrp then return end
 
 			local billboards = {}
@@ -957,16 +958,24 @@ local function setuptwistedesp(state)
 				addSideText("Ability cooldown: 0", espsettings.colors.twisted)
 			end
 
+			local researchlabel = addSideText("Research: 0%", espsettings.colors.twisted)
+			local research = rst:FindFirstChild("PlayerData"):FindFirstChild(env.stuf.plrid):FindFirstChild("Research"):FindFirstChild(twisted)
+
+			local function updateresearch()
+				local target = research and research.Value or 0
+				chasingLabel.Text = "Research: " .. research .. "%"
+			end
+
 			local twistedStats = twisted:FindFirstChild("Stats")
-			if twistedStats and twistedStats:FindFirstChild("Awake") then
+			if twisted:FindFirstChild("Awake") then
 				addSideText("Awake: 0", espsettings.colors.twisted)
 				addSideText("Rest cooldown: 0", espsettings.colors.twisted)
 			end
 
 			local chaser = twisted:FindFirstChild("Chaser")
 			local speedText = "Speed: ?"
-			if chaser and chaser:FindFirstChild("ChaseSpeed") then
-				speedText = "Speed: " .. tostring(chaser.ChaseSpeed.Value)
+			if chaser and chaser:FindFirstChild("RunSpeed") then
+				speedText = "Speed: " .. tostring(chaser.RunSpeed.Value)
 			end
 			addSideText(speedText, espsettings.colors.twisted)
 		end
