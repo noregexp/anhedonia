@@ -1344,7 +1344,8 @@ local function autofarm(state)
 								env.funcs.pop("\"FloorActive\" game stat is not true, cannot teleport to machine.")
 							end
 						else
-							env.funcs.pop("Panic mode is on, cannot teleport to machine.")
+							env.funcs.pop("Panic mode is on, cannot teleport to machine. Teleporting to elevator instead.")
+							toelevator(nil, "tp")
 						end
 					else
 						env.funcs.pop("Auto action queue is still running, cannot teleport to machine.")
@@ -1411,6 +1412,7 @@ local function autofarm(state)
 					if env.stuf.machines then
 						for _, machine in ipairs(env.stuf.machines:GetChildren()) do
 							for _ = 1, 3 do
+								if env.stuf.char.Decoding.Value then break end
 								fireproximityprompt(env.funcs.getstats("machine", machine).prox)
 								t(1)
 							end
