@@ -836,23 +836,154 @@ end
 local function setuptwistedesp(state)
 	if esphandler.twisted.conn then esphandler.twisted.conn:Disconnect() esphandler.twisted.conn = nil end
 	clearhls("twisted")
+	
+	for _, billboards in pairs(esphandler.twisted.ui) do
+		if billboards.name then billboards.name:Destroy() end
+	end
+	esphandler.twisted.ui = {}
 
 	if not state then return end
+
+	local function apply(twisted)
+		local function onchar()
+			if esphandler.twisted.ui[twisted] then
+				local billboards = esphandler.twisted.ui[twisted]
+				if billboards.name then billboards.name:Destroy() end
+				esphandler.twisted.ui[twisted] = nil
+			end
+
+			if not esphandler.twisted.enabled then return end
+
+			esphandler.twisted.hls[twisted] = newhl(twisted, espsettings.colors.twisted)
+			
+			local hrp = twisted:WaitForChild("HumanoidRootPart", 10)
+			if not hrp then return end
+
+			local billboards = {}
+			esphandler.twisted.ui[twisted] = billboards
+
+			local billboardWidth = 114
+			local sideSectionWidth = 150
+			local sideSectionHeight = 100
+			local totalBillboardWidth = billboardWidth + sideSectionWidth + 16
+			local totalBillboardHeight = 230
+
+			local fullBillboard = Instance.new("BillboardGui")
+			fullBillboard.Size = UDim2.fromOffset(totalBillboardWidth, totalBillboardHeight)
+			fullBillboard.AlwaysOnTop = true
+			fullBillboard.Adornee = hrp
+			fullBillboard.Parent = hrp
+			billboards.name = fullBillboard
+
+			local nameSection = Instance.new("Frame")
+			nameSection.Size = UDim2.fromOffset(billboardWidth, 36)
+			nameSection.Position = UDim2.fromOffset(12, 68)
+			nameSection.BackgroundTransparency = 1
+			nameSection.Parent = fullBillboard
+
+			local modelName = Instance.new("TextLabel")
+			modelName.Size = UDim2.fromOffset(billboardWidth, 17)
+			modelName.Position = UDim2.fromOffset(0, 2)
+			modelName.BackgroundTransparency = 1
+			modelName.Text = twisted.Name
+			modelName.Font = Enum.Font.FredokaOne
+			modelName.TextSize = 13
+			modelName.TextColor3 = espsettings.colors.twisted
+			modelName.TextXAlignment = Enum.TextXAlignment.Right
+			modelName.Parent = nameSection
+
+			local border1 = Instance.new("UIStroke")
+			border1.Color = Color3.fromRGB(255, 255, 255)
+			border1.Thickness = mobile and 1 or 2
+			border1.Parent = modelName
+
+			local rarityLabel = Instance.new("TextLabel")
+			rarityLabel.Size = UDim2.fromOffset(billboardWidth, 13)
+			rarityLabel.Position = UDim2.fromOffset(0, 19)
+			rarityLabel.BackgroundTransparency = 1
+			rarityLabel.Text = "RarityPlaceholder"
+			rarityLabel.Font = Enum.Font.FredokaOne
+			rarityLabel.TextSize = 13
+			rarityLabel.TextColor3 = espsettings.colors.twisted
+			rarityLabel.TextXAlignment = Enum.TextXAlignment.Right
+			rarityLabel.Parent = nameSection
+
+			local border2 = Instance.new("UIStroke")
+			border2.Color = Color3.fromRGB(255, 255, 255)
+			border2.Thickness = mobile and 1 or 2
+			border2.Parent = rarityLabel
+
+			local sideSection = Instance.new("Frame")
+			sideSection.Size = UDim2.fromOffset(sideSectionWidth, sideSectionHeight)
+			sideSection.Position = UDim2.fromOffset(billboardWidth + 16, (totalBillboardHeight / 2) - (sideSectionHeight / 2))
+			sideSection.BackgroundTransparency = 1
+			sideSection.Parent = fullBillboard
+
+			local sidelayout = Instance.new("UIListLayout")
+			sidelayout.SortOrder = Enum.SortOrder.LayoutOrder
+			sidelayout.Padding = UDim.new(0, 2)
+			sidelayout.Parent = sideSection
+
+			local function addSideText(text, color)
+				local label = Instance.new("TextLabel")
+				label.Size = UDim2.new(1, 0, 0, 15)
+				label.BackgroundTransparency = 1
+				label.Text = text
+				label.Font = Enum.Font.FredokaOne
+				label.TextSize = 13
+				label.TextColor3 = color or Color3.new(1, 1, 1)
+				label.TextXAlignment = Enum.TextXAlignment.Left
+				label.Parent = sideSection
+
+				local stroke = Instance.new("UIStroke")
+				stroke.Color = Color3.fromRGB(255, 255, 255)
+				stroke.Thickness = mobile and 1 or 2
+				stroke.Parent = label
+				return label
+			end
+
+			local chasingLabel = addSideText("Chasing: Nobody", espsettings.colors.twisted)
+			local chasingVal = twisted:WaitForChild("ChasingValue", 5)
+			
+			local function updateChasing()
+				local target = chasingVal and chasingVal.Value
+				chasingLabel.Text = "Chasing: " .. (target and target.Name or "Nobody")
+			end
+			if chasingVal then chasingVal.Changed:Connect(updateChasing) updateChasing() end
+
+			addSideText("LoS cooldown: 0", espsettings.colors.twisted)
+
+			if env.funcs.getstats("twisted", twisted).hasability then
+				addSideText("Ability cooldown: 0", espsettings.colors.twisted)
+			end
+
+			local twistedStats = twisted:FindFirstChild("Stats")
+			if twistedStats and twistedStats:FindFirstChild("Awake") then
+				addSideText("Awake: 0", espsettings.colors.twisted)
+				addSideText("Rest cooldown: 0", espsettings.colors.twisted)
+			end
+
+			local chaser = twisted:FindFirstChild("Chaser")
+			local speedText = "Speed: ?"
+			if chaser and chaser:FindFirstChild("ChaseSpeed") then
+				speedText = "Speed: " .. tostring(chaser.ChaseSpeed.Value)
+			end
+			addSideText(speedText, espsettings.colors.twisted)
+		end
+
+		onchar()
+	end
 
 	spwn(function()
 		yield(function() return env.stuf.twisteds end)
 		local folder = env.stuf.twisteds
 
 		for _, model in ipairs(folder:GetChildren()) do
-			if esphandler.twisted.enabled then
-				esphandler.twisted.hls[model] = newhl(model, espsettings.colors.twisted)
-			end
+			apply(model)
 		end
 
 		esphandler.twisted.conn = folder.ChildAdded:Connect(function(model)
-			if esphandler.twisted.enabled then
-				esphandler.twisted.hls[model] = newhl(model, espsettings.colors.twisted)
-			end
+			apply(model)
 		end)
 	end)
 end
