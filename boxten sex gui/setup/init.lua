@@ -1122,7 +1122,7 @@ do
 			if not env.stuf.machines then return end
 
 			local stats = obj:FindFirstChild("Stats") or nil
-			local pos = obj:FindFirstChild("TeleportPositions"):FindFirstChild("TeleportPosition").CFrame * CFrame.new(0, 2.3, 0) or nil
+			local pos = obj:FindFirstChild("TeleportPositions"):FindFirstChild("TeleportPosition").CFrame * CFrame.new(0, 2.3, 0) or CFrame.new(0, 0, 0)
 
 			local prox
 			if obj:FindFirstChild("Prompt") then
