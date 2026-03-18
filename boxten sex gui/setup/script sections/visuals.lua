@@ -962,9 +962,12 @@ local function setuptwistedesp(state)
 			local research = rst:FindFirstChild("PlayerData"):FindFirstChild(env.stuf.plrid):FindFirstChild("Research"):FindFirstChild(twisted.Name)
 
 			local function updateresearch()
-				local target = research and research.Value or 0
-				chasingLabel.Text = "Research: " .. research .. "%"
+    		local val = (research and research.Value) or 0
+    		researchlabel.Text = "Research: " .. tostring(val) .. "%"
 			end
+
+			if research then research.Changed:Connect(updateresearch) end
+			updateresearch()
 
 			local twistedStats = twisted:FindFirstChild("Stats")
 			if twisted:FindFirstChild("Awake") then
@@ -972,7 +975,6 @@ local function setuptwistedesp(state)
 				addSideText("Rest cooldown: 0", espsettings.colors.twisted)
 			end
 
-			local chaser = twisted:FindFirstChild("Chaser")
 			local speedText = "Speed: ?"
 			if chaser and chaser:FindFirstChild("RunSpeed") then
 				speedText = "Speed: " .. tostring(chaser.RunSpeed.Value)
