@@ -1481,6 +1481,20 @@ local function autofarm(state)
 		end)
 		table.insert(env.stuf.afe.conns, obstacledetectedconn)
 
+		local dandysellingconn = env.stuf.gameinfo.DandyStoreOpen.Changed:Connect(function(val)
+			for i = 1, 3 do
+				local slot = env.stuf.elevator.DandyStore:FindFirstChild("Slot" .. i)
+
+				if slot then
+					local model = slot:FindFirstChildWhichIsA("Model", true)
+					if model then
+						fireproximityprompt(model)
+					end
+				end
+			end
+		end)
+		table.insert(env.stuf.afe.conns, dandysellingconn)
+
 	else
 		env.funcs.box("autofarm stopped")
 		env.stuf.afe.running = false
