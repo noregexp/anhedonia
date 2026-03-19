@@ -1643,15 +1643,6 @@ local section = {
 		callback = function(value)
 		end
 	},
-	{ type = "dropdown", title = "Autofarm preset", desc = "Sets a custom preset for the Autofarm.", 
-		options = {"Default", "Toon Mastery", "Twisted Research"},
-		default = env.stuf.afe.preset,
-		canbeempty = false,
-
-		callback = function(selected) 
-			env.stuf.afe.preset = selected
-		end 
-	},
 
 	{ type = "separator", title = "Autofarm actions" },
 	{ type = "dropdown", title = "Perform autofarm actions trigger", desc = "Performs the autofarm actions when the selected event is triggered.", 
