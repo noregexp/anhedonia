@@ -991,6 +991,20 @@ end
 -------------------------------------------------------------------------------------------------------------------------------
 
 function env.funcs.pickupallitems()
+	if env.stuf.afe.running then
+		local playerstats = env.funcs.getstats("player", env.stuf.plr)
+		if playerstats then
+			local itemcount = 0
+			for i = 1, 4 do
+				local slot = playerstats["slot" .. i]
+				if slot and slot ~= "None" then
+					itemcount += 1
+				end
+			end
+			if itemcount >= env.stuf.afe.maxitemcap then return end
+		end
+	end
+
 	local oldcf = env.stuf.root.CFrame
 	ws.Gravity = 0
 	local doit
@@ -1083,6 +1097,20 @@ function env.funcs.pickupalltapes()
 end
 
 function env.funcs.pickupallheals()
+	if env.stuf.afe.running then
+		local playerstats = env.funcs.getstats("player", env.stuf.plr)
+		if playerstats then
+			local itemcount = 0
+			for i = 1, 4 do
+				local slot = playerstats["slot" .. i]
+				if slot and slot ~= "None" then
+					itemcount += 1
+				end
+			end
+			if itemcount >= env.stuf.afe.maxitemcap then return end
+		end
+	end
+
 	local oldcf = env.stuf.root.CFrame
 	ws.Gravity = 0
 
@@ -1110,6 +1138,20 @@ function env.funcs.pickupallheals()
 end
 
 function env.funcs.pickupallextitems()
+	if env.stuf.afe.running then
+		local playerstats = env.funcs.getstats("player", env.stuf.plr)
+		if playerstats then
+			local itemcount = 0
+			for i = 1, 4 do
+				local slot = playerstats["slot" .. i]
+				if slot and slot ~= "None" then
+					itemcount += 1
+				end
+			end
+			if itemcount >= env.stuf.afe.maxitemcap then return end
+		end
+	end
+
 	local oldcf = env.stuf.root.CFrame
 	ws.Gravity = 0
 
@@ -1137,6 +1179,20 @@ function env.funcs.pickupallextitems()
 end
 
 function env.funcs.pickupalleventitems()
+	if env.stuf.afe.running then
+		local playerstats = env.funcs.getstats("player", env.stuf.plr)
+		if playerstats then
+			local itemcount = 0
+			for i = 1, 4 do
+				local slot = playerstats["slot" .. i]
+				if slot and slot ~= "None" then
+					itemcount += 1
+				end
+			end
+			if itemcount >= env.stuf.afe.maxitemcap then return end
+		end
+	end
+
 	local oldcf = env.stuf.root.CFrame
 	ws.Gravity = 0
 
@@ -1588,7 +1644,6 @@ local itemnamemap = {
 
 local function itemaura(state)
 	itemauraenabled = state
-
 	if not state then
 		if itemaurathread then
 			task.cancel(itemaurathread)
@@ -1596,9 +1651,7 @@ local function itemaura(state)
 		end
 		return
 	end
-
 	if itemaurathread then return end
-
 	itemaurathread = spwn(function()
 		while itemauraenabled do
 			if env.stuf.currentroom and env.stuf.items then
@@ -1607,9 +1660,18 @@ local function itemaura(state)
 						local promptPart = item:FindFirstChild("Prompt")
 						if promptPart then
 							if env.stuf.afe.running then
-								local itemsininventory
+								local playerstats = env.funcs.getstats("player", env.stuf.plr)
+								if playerstats then
+									local itemcount = 0
+									for i = 1, 4 do
+										local slot = playerstats["slot" .. i]
+										if slot and slot ~= "None" then
+											itemcount += 1
+										end
+									end
+									if itemcount >= env.stuf.afe.maxitemcap then continue end
+								end
 							end
-
 							local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
 							if proximityPrompt then
 								fireproximityprompt(proximityPrompt)
@@ -1655,7 +1717,6 @@ env.stuf.buynamemap = {
 
 local function buyaura(state)
 	buyauraenabled = state
-
 	if not state then
 		if buyaurathread then
 			task.cancel(buyaurathread)
@@ -1663,22 +1724,33 @@ local function buyaura(state)
 		end
 		return
 	end
-
 	if buyaurathread then return end
-
 	buyaurathread = spwn(function()
 		while buyauraenabled do
 			local store = env.stuf.elevator:FindFirstChild("DandyStore")
 			if store then
-				for _, slot in ipairs(store:GetChildren()) do
-					if slot.Name:lower():match("^slot") then
-						local itemModel = slot:FindFirstChildWhichIsA("Model")
-						if itemModel and not env.stuf.buyaurablacklist[itemModel.Name] then
-							local promptPart = itemModel:FindFirstChild("Prompt")
-							if promptPart then
-								local prompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
-								if prompt then
-									fireproximityprompt(prompt)
+				local playerstats = env.funcs.getstats("player", env.stuf.plr)
+				if playerstats then
+					local itemcount = 0
+					for i = 1, 4 do
+						local slot = playerstats["slot" .. i]
+						if slot and slot ~= "None" then
+							itemcount += 1
+						end
+					end
+
+					if itemcount < env.stuf.afe.maxitemcap then
+						for _, slot in ipairs(store:GetChildren()) do
+							if slot.Name:lower():match("^slot") then
+								local itemModel = slot:FindFirstChildWhichIsA("Model")
+								if itemModel and not env.stuf.buyaurablacklist[itemModel.Name] then
+									local promptPart = itemModel:FindFirstChild("Prompt")
+									if promptPart then
+										local prompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
+										if prompt then
+											fireproximityprompt(prompt)
+										end
+									end
 								end
 							end
 						end
