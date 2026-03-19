@@ -1175,8 +1175,8 @@ do
 				hitcooldown = chaser:FindFirstChild("HitCooldown").Value
 			end
 
-			local chasing = obj:FindFirstChild("ChasingValue")
-			local ischasing = chasing and chasing.Value ~= nil
+			local chasing = obj:FindFirstChild("ChasingValue").Value
+			local ischasing = chasing and chasingf ~= nil
 
 			local hasability = obj:FindFirstChild("Grabbing") or nil
 			local usingability = hasability and hasability.Value
