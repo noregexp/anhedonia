@@ -649,7 +649,6 @@ local autovotebestcardpriority = {
 local function votebest()
 	local voter = env.stuf.gameinfo.CardVote
 	local event = rst.Events.CardVoteEvent
-
 	local function fire(name)
 		spwn(function()
 			for _, suffix in ipairs({"", "2"}) do
@@ -659,7 +658,21 @@ local function votebest()
 		end)
 	end
 
+	local inventoryfull = false
+	local playerstats = env.funcs.getstats("player", env.stuf.plr)
+	if playerstats then
+		local itemcount = 0
+		for i = 1, 4 do
+			local slot = playerstats["slot" .. i]
+			if slot and slot ~= "None" then
+				itemcount += 1
+			end
+		end
+		inventoryfull = itemcount >= env.stuf.afe.maxitemcap
+	end
+
 	for _, name in ipairs(autovotebestcardpriority) do
+		if name == "RandomItem" and inventoryfull then continue end
 		fire(name)
 	end
 
