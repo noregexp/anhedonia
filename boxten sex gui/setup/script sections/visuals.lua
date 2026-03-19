@@ -971,7 +971,16 @@ local function setuptwistedesp(state)
 
 			local twistedStats = twisted:FindFirstChild("Stats")
 			if twisted:FindFirstChild("Awake") then
-				addSideText("Awake: 0", espsettings.colors.twisted)
+				local restinglabel = addSideText("Resting", espsettings.colors.twisted)
+				local awakeval = twisted.Awake
+
+				local function updateawake()
+					local val = awakeval.Value and "Awake!" or "Resting"
+					restinglabel.Text = val
+				end
+
+				awakeval.Changed:Connect(updateawake)
+
 				addSideText("Rest cooldown: 0", espsettings.colors.twisted)
 			end
 
