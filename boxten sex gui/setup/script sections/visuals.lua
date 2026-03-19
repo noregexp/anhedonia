@@ -948,7 +948,7 @@ local function setuptwistedesp(state)
 			local sideSectionHeight = sidelayout.AbsoluteContentSize.Y
 			sideSection.Size = UDim2.fromOffset(sideSectionWidth, sideSectionHeight)
 
-			local verticalOffset = totalBillboardHeight * 0.65 -- tweak 0.65 to go lower/higher
+			local verticalOffset = totalBillboardHeight * 0.2 -- tweak 0.65 to go lower/higher
 			sideSection.Position = UDim2.fromOffset(billboardWidth + 16, verticalOffset - (sideSectionHeight / 2))
 
 			local nameSection = Instance.new("Frame")
