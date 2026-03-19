@@ -45,7 +45,7 @@ local env = getgenv.BSGUI
 
 -- ui helpers
 function lib.clik() env.funcs.playsound("rbxassetid://552900451") end
-function lib.hov() env.funcs.playsound("rbxassetid://147982968", 0.3, 2) end
+function lib.hov() env.funcs.playsound("rbxassetid://147982968", 0.1, 2) end
 
 function lib.mapkey(key)
 	local name = tostring(key):gsub("Enum.KeyCode.", "")
