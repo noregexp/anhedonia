@@ -1403,7 +1403,19 @@ local function autofarm(state)
 							if env.funcs.getgamestats().flooractive then
 								if not env.funcs.floorunloading() then
 									if not env.funcs.getstats("player", char).extracting then
-										env.funcs.tomachine("tp")
+										local beingchased
+										for _, twis in ipairs(env.stuf.twisteds:GetChildren()) do
+											if env.funcs.getstats("twisted", twis).chasing == emv.stuf.plr then
+												beingchased = true
+											end
+										end
+										if not beingchased then
+											env.funcs.tomachine("tp")
+										else
+											env.funcs.pop("Player is being chased, cannot teleport to machine. Teleporting to the sky instead.")
+											local dodge = nearobstacle() and Vector3.new(30, 0, 30) or nil
+											toskycatcher(dodge, "tp")
+										end
 									else
 										env.funcs.pop("Player is extracting, cannot teleport to machine.")
 									end
@@ -1440,8 +1452,8 @@ local function autofarm(state)
 			tplooppause = true
 
 			for _ = 1, 20 do
-        local dodge = nearobstacle() and Vector3.new(30, 0, 30) or nil
-        toskycatcher(dodge, "tp")
+				local dodge = nearobstacle() and Vector3.new(30, 0, 30) or nil
+				toskycatcher(dodge, "tp")
 				t(0.1)
 			end
 
@@ -1458,7 +1470,7 @@ local function autofarm(state)
 			end
 
 			env.funcs.box("idling in the sky for " .. highestintresttime .. " seconds")
-      t(1)
+			t(1)
 
 			for i = 1, highestintresttime do
 				env.funcs.box("resuming machine teleport loop in " .. (highestintresttime - i) .. " seconds")
