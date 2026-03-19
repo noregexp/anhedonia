@@ -992,7 +992,7 @@ end
 
 function env.funcs.pickupallitems()
 	if env.stuf.afe.running then
-		local playerstats = env.funcs.getstats("player", env.stuf.plr)
+		local playerstats = env.funcs.getstats("player", env.stuf.char)
 		if playerstats then
 			local itemcount = 0
 			for i = 1, 4 do
@@ -1098,7 +1098,7 @@ end
 
 function env.funcs.pickupallheals()
 	if env.stuf.afe.running then
-		local playerstats = env.funcs.getstats("player", env.stuf.plr)
+		local playerstats = env.funcs.getstats("player", env.stuf.char)
 		if playerstats then
 			local itemcount = 0
 			for i = 1, 4 do
@@ -1139,7 +1139,7 @@ end
 
 function env.funcs.pickupallextitems()
 	if env.stuf.afe.running then
-		local playerstats = env.funcs.getstats("player", env.stuf.plr)
+		local playerstats = env.funcs.getstats("player", env.stuf.char)
 		if playerstats then
 			local itemcount = 0
 			for i = 1, 4 do
@@ -1180,7 +1180,7 @@ end
 
 function env.funcs.pickupalleventitems()
 	if env.stuf.afe.running then
-		local playerstats = env.funcs.getstats("player", env.stuf.plr)
+		local playerstats = env.funcs.getstats("player", env.stuf.char)
 		if playerstats then
 			local itemcount = 0
 			for i = 1, 4 do
@@ -1660,7 +1660,7 @@ local function itemaura(state)
 						local promptPart = item:FindFirstChild("Prompt")
 						if promptPart then
 							if env.stuf.afe.running then
-								local playerstats = env.funcs.getstats("player", env.stuf.plr)
+								local playerstats = env.funcs.getstats("player", env.stuf.char)
 								if playerstats then
 									local itemcount = 0
 									for i = 1, 4 do
@@ -1729,7 +1729,7 @@ local function buyaura(state)
 		while buyauraenabled do
 			local store = env.stuf.elevator:FindFirstChild("DandyStore")
 			if store then
-				local playerstats = env.funcs.getstats("player", env.stuf.plr)
+				local playerstats = env.funcs.getstats("player", env.stuf.char)
 				if playerstats then
 					local itemcount = 0
 					for i = 1, 4 do
