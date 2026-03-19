@@ -1391,7 +1391,7 @@ local function autofarm(state)
 				if not tplooppause then
 					if env.stuf.actionqueuerunning then
 						if lastPos and currentPos and (lastPos - currentPos).Magnitude < 0.1 then
-							env.funcs.pop("Action queue stalled (No movement). Forcing teleport.")
+							env.funcs.pop("Action queue stalled, no movement detected, forcing teleport.")
 							env.stuf.actionqueuerunning = false
 						else
 							env.funcs.pop("Auto action queue is still running, cannot teleport to machine.")
@@ -1405,7 +1405,7 @@ local function autofarm(state)
 									if not env.funcs.getstats("player", char).extracting then
 										local beingchased
 										for _, twis in ipairs(env.stuf.twisteds:GetChildren()) do
-											if env.funcs.getstats("twisted", twis).chasing == emv.stuf.plr then
+											if env.funcs.getstats("twisted", twis).chasing == env.stuf.plr then
 												beingchased = true
 											end
 										end
