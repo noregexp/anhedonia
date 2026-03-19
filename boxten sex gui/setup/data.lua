@@ -83,7 +83,6 @@ local dB = {
 • Added a "Orbit player" toggle + input. (Fun/Actions)
 • Added a "Adjust orbit radius" slider. (Fun/Actions)
 • Added a "Adjust orbit speed" slider. (Fun/Actions)
-• Added a "Autofarm priority" dropdown. (Automation/Autofarm settings)
 • Added a "Item capacity limit" slider. (Automation/Autofarm settings)
 • Added a "Toon ability replication" section. (Local Player)
 • Added a "Access" section. (Donor)
