@@ -1606,8 +1606,12 @@ local function itemaura(state)
 					if not itemaurablacklist[item.Name] then
 						local promptPart = item:FindFirstChild("Prompt")
 						if promptPart then
+							if env.stuf.afe.running then
+								local itemsininventory
+							end
+
 							local proximityPrompt = promptPart:FindFirstChildOfClass("ProximityPrompt")
-							if proximityPrompt and proximityPrompt.Enabled then
+							if proximityPrompt then
 								fireproximityprompt(proximityPrompt)
 							end
 						end
