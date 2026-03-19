@@ -665,7 +665,7 @@ local function votebest()
 	end
 
 	local inventoryfull = false
-	local playerstats = env.funcs.getstats("player", env.stuf.plr)
+	local playerstats = env.funcs.getstats("player", env.stuf.char)
 	if playerstats then
 		local itemcount = 0
 		for i = 1, 4 do
