@@ -450,10 +450,9 @@ local function setupplayeresp(state)
 
 			local nameRowHeight = 36
 
-			local head = char:WaitForChild("Head", 10)
 			local hrp = char:WaitForChild("HumanoidRootPart", 10)
 			local inventory = char:WaitForChild("Inventory", 10)
-			if not hrp or not head or not inventory then return end
+			if not hrp then return end
 
 			local billboards = {}
 			esphandler.player.ui[player.Name] = billboards
@@ -864,55 +863,136 @@ local function setuptwistedesp(state)
 			esphandler.twisted.ui[twisted] = billboards
 
 			local billboardWidth = 114
-			local sideSectionWidth = 150
-			local sideSectionHeight = 100
-			local totalBillboardWidth = billboardWidth + sideSectionWidth + 16
-			local totalBillboardHeight = 230
+local sideSectionWidth = 150
+local totalBillboardWidth = billboardWidth + sideSectionWidth + 16
+local totalBillboardHeight = 300 -- extra height to push content lower
 
-			local fullBillboard = Instance.new("BillboardGui")
-			fullBillboard.Size = UDim2.fromOffset(totalBillboardWidth, totalBillboardHeight)
-			fullBillboard.AlwaysOnTop = true
-			fullBillboard.Adornee = hrp
-			fullBillboard.Parent = hrp
-			billboards.name = fullBillboard
+local fullBillboard = Instance.new("BillboardGui")
+fullBillboard.Size = UDim2.fromOffset(totalBillboardWidth, totalBillboardHeight)
+fullBillboard.AlwaysOnTop = true
+fullBillboard.Adornee = hrp
+fullBillboard.Parent = hrp
+billboards.name = fullBillboard
 
-			local nameSection = Instance.new("Frame")
-			nameSection.Size = UDim2.fromOffset(billboardWidth, 36)
-			nameSection.Position = UDim2.fromOffset(12, 68)
-			nameSection.BackgroundTransparency = 1
-			nameSection.Parent = fullBillboard
+-- Side section built first so we can measure its height
+local sideSection = Instance.new("Frame")
+sideSection.Size = UDim2.fromOffset(sideSectionWidth, 0) -- height set dynamically later
+sideSection.BackgroundTransparency = 1
+sideSection.Parent = fullBillboard
 
-			local modelName = Instance.new("TextLabel")
-			modelName.Size = UDim2.fromOffset(billboardWidth, 17)
-			modelName.Position = UDim2.fromOffset(0, 2)
-			modelName.BackgroundTransparency = 1
-			modelName.Text = twisted.Name
-			modelName.Font = Enum.Font.FredokaOne
-			modelName.TextSize = 13
-			modelName.TextColor3 = espsettings.colors.twisted
-			modelName.TextXAlignment = Enum.TextXAlignment.Right
-			modelName.Parent = nameSection
+local sidelayout = Instance.new("UIListLayout")
+sidelayout.SortOrder = Enum.SortOrder.LayoutOrder
+sidelayout.Padding = UDim.new(0, 2)
+sidelayout.Parent = sideSection
 
-			local border1 = Instance.new("UIStroke")
-			border1.Color = Color3.fromRGB(255, 255, 255)
-			border1.Thickness = mobile and 1 or 2
-			border1.Parent = modelName
+local function addSideText(text, color)
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 0, 15)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.Font = Enum.Font.FredokaOne
+    label.TextSize = 13
+    label.TextColor3 = color or Color3.new(1, 1, 1)
+    label.TextXAlignment = Enum.TextXAlignment.Left
+    label.Parent = sideSection
 
-			local rarityLabel = Instance.new("TextLabel")
-			rarityLabel.Size = UDim2.fromOffset(billboardWidth, 13)
-			rarityLabel.Position = UDim2.fromOffset(0, 19)
-			rarityLabel.BackgroundTransparency = 1
-			rarityLabel.Text = "RarityPlaceholder"
-			rarityLabel.Font = Enum.Font.FredokaOne
-			rarityLabel.TextSize = 13
-			rarityLabel.TextColor3 = espsettings.colors.twisted
-			rarityLabel.TextXAlignment = Enum.TextXAlignment.Right
-			rarityLabel.Parent = nameSection
+    local stroke = Instance.new("UIStroke")
+    stroke.Color = Color3.fromRGB(255, 255, 255)
+    stroke.Thickness = mobile and 1 or 2
+    stroke.Parent = label
+    return label
+end
 
-			local border2 = Instance.new("UIStroke")
-			border2.Color = Color3.fromRGB(255, 255, 255)
-			border2.Thickness = mobile and 1 or 2
-			border2.Parent = rarityLabel
+-- Add all side labels
+local chasingLabel = addSideText("Chasing: Nobody", espsettings.colors.twisted)
+local chasingVal = twisted:WaitForChild("ChasingValue", 5)
+
+local function updateChasing()
+    local target = chasingVal and chasingVal.Value
+    chasingLabel.Text = "Chasing: " .. (target and target.Name or "Nobody")
+end
+if chasingVal then chasingVal.Changed:Connect(updateChasing) updateChasing() end
+
+addSideText("LoS cooldown: 0", espsettings.colors.twisted)
+
+if env.funcs.getstats("twisted", twisted).hasability then
+    addSideText("Ability cooldown: 0", espsettings.colors.twisted)
+end
+
+local researchlabel = addSideText("Research: 0%", espsettings.colors.twisted)
+local research = rst:FindFirstChild("PlayerData"):FindFirstChild(env.stuf.plrid):FindFirstChild("Research"):FindFirstChild(twisted.Name)
+
+local function updateresearch()
+    local val = (research and research.Value) or 0
+    researchlabel.Text = "Research: " .. tostring(val) .. "%"
+end
+if research then research.Changed:Connect(updateresearch) end
+updateresearch()
+
+if twisted:FindFirstChild("Awake") then
+    local restinglabel = addSideText("Resting", espsettings.colors.twisted)
+    local awakeval = twisted.Awake
+
+    local function updateawake()
+        restinglabel.Text = awakeval.Value and "Awake!" or "Resting"
+    end
+    awakeval.Changed:Connect(updateawake)
+
+    addSideText("Rest cooldown: 0", espsettings.colors.twisted)
+end
+
+local speedText = "Speed: ?"
+if chaser and chaser:FindFirstChild("RunSpeed") then
+    speedText = "Speed: " .. tostring(chaser.RunSpeed.Value)
+end
+addSideText(speedText, espsettings.colors.twisted)
+
+-- Now measure the dynamic side section height and position everything
+local sideSectionHeight = sidelayout.AbsoluteContentSize.Y
+sideSection.Size = UDim2.fromOffset(sideSectionWidth, sideSectionHeight)
+
+-- Push content into the lower half of the billboard to appear lower on screen
+local verticalOffset = totalBillboardHeight * 0.65 -- tweak 0.65 to go lower/higher
+sideSection.Position = UDim2.fromOffset(billboardWidth + 16, verticalOffset - (sideSectionHeight / 2))
+
+-- Name section vertically centered against side section
+local nameSection = Instance.new("Frame")
+nameSection.Size = UDim2.fromOffset(billboardWidth, 36)
+nameSection.Position = UDim2.fromOffset(12, verticalOffset - (36 / 2))
+nameSection.BackgroundTransparency = 1
+nameSection.Parent = fullBillboard
+
+local modelName = Instance.new("TextLabel")
+modelName.Size = UDim2.fromOffset(billboardWidth, 17)
+modelName.Position = UDim2.fromOffset(0, 2)
+modelName.BackgroundTransparency = 1
+modelName.Text = twisted.Name
+modelName.Font = Enum.Font.FredokaOne
+modelName.TextSize = 13
+modelName.TextColor3 = espsettings.colors.twisted
+modelName.TextXAlignment = Enum.TextXAlignment.Right
+modelName.Parent = nameSection
+
+local border1 = Instance.new("UIStroke")
+border1.Color = Color3.fromRGB(255, 255, 255)
+border1.Thickness = mobile and 1 or 2
+border1.Parent = modelName
+
+local rarityLabel = Instance.new("TextLabel")
+rarityLabel.Size = UDim2.fromOffset(billboardWidth, 13)
+rarityLabel.Position = UDim2.fromOffset(0, 19)
+rarityLabel.BackgroundTransparency = 1
+rarityLabel.Text = "RarityPlaceholder"
+rarityLabel.Font = Enum.Font.FredokaOne
+rarityLabel.TextSize = 13
+rarityLabel.TextColor3 = espsettings.colors.twisted
+rarityLabel.TextXAlignment = Enum.TextXAlignment.Right
+rarityLabel.Parent = nameSection
+
+local border2 = Instance.new("UIStroke")
+border2.Color = Color3.fromRGB(255, 255, 255)
+border2.Thickness = mobile and 1 or 2
+border2.Parent = rarityLabel
 
 			local sideSection = Instance.new("Frame")
 			sideSection.Size = UDim2.fromOffset(sideSectionWidth, sideSectionHeight)
