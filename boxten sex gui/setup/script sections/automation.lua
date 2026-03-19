@@ -446,13 +446,19 @@ function spamspace()
 
 	spwn(function()
 		while autotreadmillspamming do
+			local menu = env.stuf.plrgui.ScreenGui:FindFirstChild("Menu")
+
+			firesignal(menu.Calibrate.MouseButton1Down)
+			firesignal(menu.Calibrate.MouseButton1Up)
+			firesignal(menu.Calibrate.MouseButton1Click)
+			firesignal(menu.Calibrate.Activated)
 			t(autotreadmilldelay)
 		end
 		autotreadmillspamming = false
 	end)
 end
 
-function ojnef9023htibweidunfp9q83hfojdsnfv()
+local function ojnef9023htibweidunfp9q83hfojdsnfv()
 	for _, gui in ipairs(env.stuf.plrgui:GetChildren()) do
 		if gui:IsA("ScreenGui") and gui.Name:find("Tre") then
 			spamspace()
@@ -507,7 +513,7 @@ spwn(function()
 	end
 end)
 
-function autocalibration2(state)
+local function autocalibration2(state)
 	instantcalibrating = state
 	
 	if env.stuf.inrun then
@@ -1265,6 +1271,39 @@ end
 
 -------------------------------------------------------------------------------------------------------------------------------
 
+local antimemoryleakenabled = false
+local antimemoryleakconn = nil
+local antimemoryleakthresh = 2500
+
+local function toggleantimemoryleak(state)
+	antimemoryleakenabled = state
+	if not antimemoryleakenabled then
+		env.essentials.library.update("Disable 3D rendering", false)
+		if antimemoryleakconn then
+			task.cancel(antimemoryleakconn)
+			antimemoryleakconn = nil
+		end
+		return
+	else
+		env.essentials.library.update("Disable 3D rendering", true)
+	end
+
+	antimemoryleakconn = spwn(function()
+		while antimemoryleakenabled do
+			local memValue = gcinfo() / 1024
+			if memValue > antimemoryleakthresh then
+				env.essentials.library.update("Disable 3D rendering", false)
+				task.delay(1, function()
+					env.essentials.library.update("Disable 3D rendering", true)
+				end)
+			end
+			t(1)
+		end
+	end)
+end
+
+-------------------------------------------------------------------------------------------------------------------------------
+
 env.stuf.afe = {
 	running = false,
 	priority = {},
@@ -1645,15 +1684,17 @@ local section = {
 	},
 	{ type = "toggle", title = "Anti crash for autofarm", desc = "Toggles a mode that prevents your device from crashing due to memory leaks all while trying to keep your device's temperature stable. Use this when you want to autofarm on a low-end device for a long period of time.",
 		callback = function(state) 
+			toggleantimemoryleak(state)
 		end
 	},
 	{ type = "slider", title = "Anti crash memory leak threshold", desc = "Lowers the memory usage when it exceeds the set value.", 
 		min = 1000, 
 		max = 15000, 
-		default = 2000, 
+		default = antimemoryleakthresh, 
 		step = 100,
 
 		callback = function(value)
+			antimemoryleakthresh = value
 		end
 	},
 
