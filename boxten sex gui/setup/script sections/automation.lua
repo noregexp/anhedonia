@@ -46,22 +46,6 @@ local function yield(this)
 	repeat t() until this() 
 end
 
-local function toskycatcher(off, method)
-  method = method or "tp"
-  local basecf = env.stuf.skycatcher.CFrame
-
-  if env.stuf.root then
-    if off then
-      local relative = basecf:PointToObjectSpace(env.stuf.root.Position)
-      local finaldestination = basecf:PointToWorldSpace(relative + off)
-
-      env.funcs.moveplr(CFrame.new(finaldestination + Vector3.new(0, 2.7, 0)), method)
-    else
-      env.funcs.moveplr(basecf * CFrame.new(0, 2.7, 0), method)
-    end
-  end
-end
-
 local function nearobstacle()
 	if not env.stuf.currentroom then return false end
 
@@ -1412,7 +1396,7 @@ local function autofarm(state)
 										else
 											env.funcs.pop("Player is being chased, cannot teleport to machine. Teleporting to the sky instead.")
 											local dodge = nearobstacle() and Vector3.new(30, 0, 30) or nil
-											toskycatcher(dodge, "tp")
+											env.funcs.toskycatcher(dodge, "tp")
 										end
 									else
 										env.funcs.pop("Player is extracting, cannot teleport to machine.")
