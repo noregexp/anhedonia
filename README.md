@@ -1,3 +1,12 @@
+# info
+
+**Boxten Sex GUI** by **unable**
+
+loadstring: `loadstring(game:HttpGet(""))()`
+
+# way (0xt)
+
+```
 load.lua
 ├ ui
 │ ├ library.lua
@@ -30,3 +39,4 @@ load.lua
     ├ call.mp3
     ├ the things id do for a whopper with cheese.mp3
     └ flashbang.mp3
+```
