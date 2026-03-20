@@ -88,6 +88,15 @@ local function nearobstacle()
 	return false
 end
 
+local function firebuttonsignal(button)
+	if button and firesignal then
+		firesignal(button.MouseButton1Down)
+		firesignal(button.MouseButton1Up)
+		firesignal(button.MouseButton1Click)
+		firesignal(button.Activated)
+	end
+end
+
 -------------------------------------------------------------------------------------------------------------------------------
 
 local autoescapewormconn
@@ -243,10 +252,7 @@ local function handlesc()
 				local garea = goldarea.AbsoluteSize
 
 				if mpos.X >= gpos.X and mpos.X <= (gpos.X + garea.X) + tl then
-					firesignal(menu.Calibrate.MouseButton1Down)
-					firesignal(menu.Calibrate.MouseButton1Up)
-					firesignal(menu.Calibrate.MouseButton1Click)
-					firesignal(menu.Calibrate.Activated)
+					firebuttonsignal(menu.Calibrate)
 				end
 			end
 		end
@@ -335,10 +341,7 @@ function handlecm()
 				t(0.03)
 				local menu = env.stuf.plrgui.ScreenGui:FindFirstChild("Menu")
 
-				firesignal(menu.Calibrate.MouseButton1Down)
-				firesignal(menu.Calibrate.MouseButton1Up)
-				firesignal(menu.Calibrate.MouseButton1Click)
-				firesignal(menu.Calibrate.Activated)
+				firebuttonsignal(menu.Calibrate)
 				acmlastpresstime = tick()
 				acmalreadypressed = true
 			end
@@ -446,12 +449,7 @@ function spamspace()
 
 	spwn(function()
 		while autotreadmillspamming do
-			local menu = env.stuf.plrgui.ScreenGui:FindFirstChild("Menu")
-
-			firesignal(menu.Calibrate.MouseButton1Down)
-			firesignal(menu.Calibrate.MouseButton1Up)
-			firesignal(menu.Calibrate.MouseButton1Click)
-			firesignal(menu.Calibrate.Activated)
+			firebuttonsignal(env.stuf.plrgui.ScreenGui.Menu.Calibrate)
 			t(autotreadmilldelay)
 		end
 		autotreadmillspamming = false
