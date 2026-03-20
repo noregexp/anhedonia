@@ -737,13 +737,13 @@ do
 		end)
 	end
 
-  env.stuf.skycatcher = Instance.new("Part")
-  env.stuf.skycatcher.Size = Vector3.new(5000, 1, 5000)
-  env.stuf.skycatcher.Position = Vector3.new(-747, 250, 95)
-  env.stuf.skycatcher.Anchored = true
-  env.stuf.skycatcher.BrickColor = BrickColor.new("Medium stone grey")
-  env.stuf.skycatcher.Transparency = 0.5
-  env.stuf.skycatcher.Parent = ws
+	env.stuf.skycatcher = Instance.new("Part")
+  	env.stuf.skycatcher.Size = Vector3.new(5000, 1, 5000)
+  	env.stuf.skycatcher.Position = Vector3.new(-747, 250, 95)
+  	env.stuf.skycatcher.Anchored = true
+  	env.stuf.skycatcher.BrickColor = BrickColor.new("Medium stone grey")
+  	env.stuf.skycatcher.Transparency = 0.5
+  	env.stuf.skycatcher.Parent = ws
 
 	-- ui
 	env.stuf.mainframe, env.stuf.mainframesections = nil
@@ -1495,6 +1495,22 @@ do
 		elseif method == "pf" then
 			env.funcs.pathfindto(cf, spec or false)
 		end
+	end
+
+	function env.funcs.toskycatcher(off, method) -- brings the player to a safe spot in the sky, off makes the player teleport to the skycatcher relative from their current position
+  		method = method or "tp"
+  		local basecf = env.stuf.skycatcher.CFrame
+
+  		if env.stuf.root then
+    		if off then
+      			local relative = basecf:PointToObjectSpace(env.stuf.root.Position)
+      			local finaldestination = basecf:PointToWorldSpace(relative + off)
+
+      			env.funcs.moveplr(CFrame.new(finaldestination + Vector3.new(0, 2.7, 0)), method)
+    		else
+      			env.funcs.moveplr(basecf * CFrame.new(0, 2.7, 0), method)
+    		end
+  		end
 	end
 
 	-- ui
