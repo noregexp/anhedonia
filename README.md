@@ -2,7 +2,7 @@
 
 **Boxten Sex GUI** by **unable**
 
-loadstring: `loadstring(game:HttpGet(""))()`
+loadstring: `loadstring(game:HttpGet("https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/load.lua"))()`
 
 # way (0xt)
 
