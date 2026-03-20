@@ -1435,7 +1435,7 @@ local function autofarm(state)
 
 			for _ = 1, 20 do
 				local dodge = nearobstacle() and Vector3.new(30, 0, 30) or nil
-				toskycatcher(dodge, "tp")
+				env.funcs.toskycatcher(dodge, "tp")
 				t(0.1)
 			end
 
