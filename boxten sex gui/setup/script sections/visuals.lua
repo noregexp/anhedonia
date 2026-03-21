@@ -538,11 +538,12 @@ local function setupplayeresp(state)
 				UDim2.fromOffset(centerX + startX,                         centerY),
 				UDim2.fromOffset(centerX + startX + slotSize + gap,        centerY),
 				UDim2.fromOffset(centerX + startX + (slotSize + gap) * 2,  centerY),
+				UDim2.fromOffset(centerX + startX + (slotSize + gap) * 3,  centerY),
 			}
 			
-			local isbassie = env.funcs.getstats("player", char).currenttoon == "Bassie"
+			local maxSlots = 3
 
-			for i = 1, (isbassie and 4 or 3) do
+			for i = 1, 4 do
 				local frame, img = bubble(invSection, invPositions[i], "")
 				slots[i] = frame
 				slotImages[i] = img
@@ -558,24 +559,42 @@ local function setupplayeresp(state)
 			end
 
 			local slotConns = {}
-			for i = 1, (isbassie and 4 or 3) do
+			for i = 1, 4 do
 				local slotValue = inventory:FindFirstChild("Slot" .. i)
 
 				if slotValue then
+					if i == 4 then
+						slots[4].Visible = true
+						maxSlots = 4
+					end
 					updateSlot(i, slotValue.Value)
-
 					slotConns[i] = slotValue.Changed:Connect(function(newValue)
 						updateSlot(i, newValue)
 					end)
+				else
+					if i == 4 then
+						slots[4].Visible = false
+					end
 				end
 
 				inventory.ChildAdded:Connect(function(child)
 					if child.Name == "Slot" .. i then
+						if i == 4 then
+							slots[4].Visible = true
+							maxSlots = 4
+						end
 						updateSlot(i, child.Value)
 						if slotConns[i] then slotConns[i]:Disconnect() end
 						slotConns[i] = child.Changed:Connect(function(newValue)
 							updateSlot(i, newValue)
 						end)
+					end
+				end)
+
+				inventory.ChildRemoved:Connect(function(child)
+					if child.Name == "Slot4" then
+						slots[4].Visible = false
+						maxSlots = 3
 					end
 				end)
 			end
@@ -658,7 +677,7 @@ local function setupplayeresp(state)
 			end
 
 			local function updateHearts(current, max)
-				max = math.clamp(max, 3, 4)
+				max = math.clamp(max, 1, 4)
 				for i = 1, 4 do
 					local heart = heartIcons[i]
 					if i <= max then
@@ -927,7 +946,7 @@ local function setuptwistedesp(state)
 
 			local chasingRowLayout = Instance.new("UIListLayout")
 			chasingRowLayout.FillDirection = Enum.FillDirection.Horizontal
-			chasingRowLayout.Padding = UDim.new(0, 4)
+			-- chasingRowLayout.Padding = UDim.new(0, 2)
 			chasingRowLayout.SortOrder = Enum.SortOrder.LayoutOrder
 			chasingRowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 			chasingRowLayout.Parent = chasingRow
@@ -1004,10 +1023,10 @@ local function setuptwistedesp(state)
 					return
 				end
 
-				if target == game:GetService("Players").LocalPlayer then
+				if target == env.stuf.plr then
 					chasingYouLabel.Visible = true
 				else
-					local icon = env.funcs.getstats("player", target.Character).icon
+					local icon = env.funcs.getstats("player", target).icon
 					chasingIcon.Image = icon or ""
 					chasingIcon.Visible = true
 				end
@@ -1046,12 +1065,65 @@ local function setuptwistedesp(state)
 				addSideText("Rest cooldown: 0", espsettings.colors.twisted)
 			end
 
-			local speedText = "Speed: ?"
+			local speedRow = Instance.new("Frame")
+			speedRow.Size = UDim2.new(1, 0, 0, 15)
+			speedRow.BackgroundTransparency = 1
+			speedRow.Parent = sideSection
+
+			local speedRowLayout = Instance.new("UIListLayout")
+			speedRowLayout.FillDirection = Enum.FillDirection.Horizontal
+			-- speedRowLayout.Padding = UDim.new(0, 4)
+			speedRowLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			speedRowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+			speedRowLayout.Parent = speedRow
+
+			local speedLabel = Instance.new("TextLabel")
+			speedLabel.Size = UDim2.fromOffset(70, 15)
+			speedLabel.BackgroundTransparency = 1
+			speedLabel.Font = Enum.Font.FredokaOne
+			speedLabel.TextSize = 13
+			speedLabel.TextColor3 = espsettings.colors.twisted
+			speedLabel.TextXAlignment = Enum.TextXAlignment.Left
+			speedLabel.LayoutOrder = 0
+			speedLabel.Parent = speedRow
+
+			local speedStroke = Instance.new("UIStroke")
+			speedStroke.Color = Color3.fromRGB(255, 255, 255)
+			speedStroke.Thickness = mobile and 1 or 2
+			speedStroke.Parent = speedLabel
+
+			local warningLabel = Instance.new("TextLabel")
+			warningLabel.Size = UDim2.fromOffset(70, 15)
+			warningLabel.BackgroundTransparency = 1
+			warningLabel.Text = "⚠️ Faster"
+			warningLabel.Font = Enum.Font.FredokaOne
+			warningLabel.TextSize = 13
+			warningLabel.TextColor3 = espsettings.colors.twisted
+			warningLabel.TextXAlignment = Enum.TextXAlignment.Left
+			warningLabel.LayoutOrder = 1
+			warningLabel.Visible = false
+			warningLabel.Parent = speedRow
+
+			local warningStroke = Instance.new("UIStroke")
+			warningStroke.Color = Color3.fromRGB(0, 0, 0)
+			warningStroke.Thickness = mobile and 1 or 2
+			warningStroke.Parent = warningLabel
+
+			local function updateSpeed(runSpeed)
+				local playerSpeed = env.stuf.plrstats and env.stuf.plrstats.RunSpeedModifier or 0
+				speedLabel.Text = "Speed: " .. tostring(runSpeed)
+				warningLabel.Visible = runSpeed > playerSpeed
+			end
+
 			local chaser = twisted:FindFirstChild("Chaser")
 			if chaser and chaser:FindFirstChild("RunSpeed") then
-				speedText = "Speed: " .. tostring(chaser.RunSpeed.Value)
+				updateSpeed(chaser.RunSpeed.Value)
+				chaser.RunSpeed.Changed:Connect(function(newSpeed)
+					updateSpeed(newSpeed)
+				end)
+			else
+				speedLabel.Text = "Speed: ?"
 			end
-			addSideText(speedText, espsettings.colors.twisted)
 
 			local sideSectionHeight = sidelayout.AbsoluteContentSize.Y
 			sideSection.Size = UDim2.fromOffset(sideSectionWidth, sideSectionHeight)
