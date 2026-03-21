@@ -47,6 +47,14 @@ local function yield(this)
 	repeat t() until this() 
 end
 
+local function formattwisname(s: string): string
+	local before, after = s:match("^(.-)Monster(.*)$")
+	if not before then
+		return s
+	end
+	return "Twisted " .. before .. after
+end
+
 -------------------------------------------------------------------------------------------------------------------------------
 
 fbconn, fogconn = nil
@@ -317,6 +325,8 @@ local espsettings = {
 		rareitem = Color3.fromRGB(173, 65, 245),
 		ultrarareitem = Color3.fromRGB(255, 141, 45),
 		dangerousitem = Color3.fromRGB(255, 255, 0),
+		eventitem = Color3.fromRGB(255, 170, 255),
+		mainorlethalcapsule = Color3.fromRGB(4, 145, 0),
 
 		elevator = Color3.fromRGB(80, 80, 80),
 		fakeelevator = Color3.fromRGB(171, 171, 4),
@@ -529,8 +539,10 @@ local function setupplayeresp(state)
 				UDim2.fromOffset(centerX + startX + slotSize + gap,        centerY),
 				UDim2.fromOffset(centerX + startX + (slotSize + gap) * 2,  centerY),
 			}
+			
+			local isbassie = env.funcs.getstats("player", char).currenttoon == "Bassie"
 
-			for i = 1, 3 do
+			for i = 1, (isbassie and 4 or 3) do
 				local frame, img = bubble(invSection, invPositions[i], "")
 				slots[i] = frame
 				slotImages[i] = img
@@ -546,7 +558,7 @@ local function setupplayeresp(state)
 			end
 
 			local slotConns = {}
-			for i = 1, 3 do
+			for i = 1, (isbassie and 4 or 3) do
 				local slotValue = inventory:FindFirstChild("Slot" .. i)
 
 				if slotValue then
@@ -854,6 +866,12 @@ local function setuptwistedesp(state)
 
 			if not esphandler.twisted.enabled then return end
 
+			local targethlcol
+			if twisted.Name:find("Bassie") or twisted.Name:find("Cocoa") or twisted.Name:find("Flyte") or twisted.Name:find("Eggson") then
+				targethlcol = espsettings.colors.eventitem
+			else
+				targethlcol = espsettings.colors.twisted
+			end
 			esphandler.twisted.hls[twisted] = newhl(twisted, espsettings.colors.twisted)
 
 			local hrp = env.funcs.getstats("twisted", twisted).troot
@@ -949,7 +967,7 @@ local function setuptwistedesp(state)
 			local sideSectionHeight = sidelayout.AbsoluteContentSize.Y
 			sideSection.Size = UDim2.fromOffset(sideSectionWidth, sideSectionHeight)
 
-			local verticalOffset = totalBillboardHeight * 0.5 -- tweak 0.65 to go lower/higher
+			local verticalOffset = totalBillboardHeight * 0.5
 			sideSection.Position = UDim2.fromOffset(billboardWidth + 16, verticalOffset - (sideSectionHeight / 2))
 
 			local nameSection = Instance.new("Frame")
@@ -962,7 +980,7 @@ local function setuptwistedesp(state)
 			modelName.Size = UDim2.fromOffset(billboardWidth, 17)
 			modelName.Position = UDim2.fromOffset(0, 2)
 			modelName.BackgroundTransparency = 1
-			modelName.Text = twisted.Name
+			modelName.Text = formattwisname(twisted.Name)
 			modelName.Font = Enum.Font.FredokaOne
 			modelName.TextSize = 13
 			modelName.TextColor3 = espsettings.colors.twisted
