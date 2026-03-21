@@ -1,10 +1,10 @@
 # info
 
-**Boxten Sex GUI** by **unable**
+**Boxten Sex GUI 1.3.0** by **unable**
 
 loadstring: `loadstring(game:HttpGet("https://raw.githubusercontent.com/noregexp/anhedonia/refs/heads/main/boxten%20sex%20gui/load.lua"))()`
 
-# way (0xt)
+# visualization
 
 ```
 load.lua
