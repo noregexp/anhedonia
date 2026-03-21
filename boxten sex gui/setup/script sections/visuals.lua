@@ -397,7 +397,7 @@ end
 local function setupplayeresp(state)
 	if esphandler.player.conn then esphandler.player.conn:Disconnect() esphandler.player.conn = nil end
 	clearhls("player")
-	
+
 	for _, billboards in pairs(esphandler.player.ui) do
 		if billboards.name then billboards.name:Destroy() end
 	end
@@ -836,7 +836,7 @@ end
 local function setuptwistedesp(state)
 	if esphandler.twisted.conn then esphandler.twisted.conn:Disconnect() esphandler.twisted.conn = nil end
 	clearhls("twisted")
-	
+
 	for _, billboards in pairs(esphandler.twisted.ui) do
 		if billboards.name then billboards.name:Destroy() end
 	end
@@ -855,7 +855,7 @@ local function setuptwistedesp(state)
 			if not esphandler.twisted.enabled then return end
 
 			esphandler.twisted.hls[twisted] = newhl(twisted, espsettings.colors.twisted)
-			
+
 			local hrp = env.funcs.getstats("twisted", twisted).troot
 			if not hrp then return end
 
@@ -940,6 +940,7 @@ local function setuptwistedesp(state)
 			end
 
 			local speedText = "Speed: ?"
+			local chaser = twisted:FindFirstChild("Chaser")
 			if chaser and chaser:FindFirstChild("RunSpeed") then
 				speedText = "Speed: " .. tostring(chaser.RunSpeed.Value)
 			end
@@ -948,7 +949,7 @@ local function setuptwistedesp(state)
 			local sideSectionHeight = sidelayout.AbsoluteContentSize.Y
 			sideSection.Size = UDim2.fromOffset(sideSectionWidth, sideSectionHeight)
 
-			local verticalOffset = totalBillboardHeight * 0.2 -- tweak 0.65 to go lower/higher
+			local verticalOffset = totalBillboardHeight * 0.5 -- tweak 0.65 to go lower/higher
 			sideSection.Position = UDim2.fromOffset(billboardWidth + 16, verticalOffset - (sideSectionHeight / 2))
 
 			local nameSection = Instance.new("Frame")
