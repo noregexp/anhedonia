@@ -920,14 +920,103 @@ local function setuptwistedesp(state)
 				return label
 			end
 
-			local chasingLabel = addSideText("Chasing: Nobody", espsettings.colors.twisted)
+			local chasingRow = Instance.new("Frame")
+			chasingRow.Size = UDim2.new(1, 0, 0, 15)
+			chasingRow.BackgroundTransparency = 1
+			chasingRow.Parent = sideSection
+
+			local chasingRowLayout = Instance.new("UIListLayout")
+			chasingRowLayout.FillDirection = Enum.FillDirection.Horizontal
+			chasingRowLayout.Padding = UDim.new(0, 4)
+			chasingRowLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			chasingRowLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+			chasingRowLayout.Parent = chasingRow
+
+			local chasingTextLabel = Instance.new("TextLabel")
+			chasingTextLabel.Size = UDim2.fromOffset(55, 15)
+			chasingTextLabel.BackgroundTransparency = 1
+			chasingTextLabel.Text = "Chasing:"
+			chasingTextLabel.Font = Enum.Font.FredokaOne
+			chasingTextLabel.TextSize = 13
+			chasingTextLabel.TextColor3 = espsettings.colors.twisted
+			chasingTextLabel.TextXAlignment = Enum.TextXAlignment.Left
+			chasingTextLabel.LayoutOrder = 0
+			chasingTextLabel.Parent = chasingRow
+
+			local chasingStroke = Instance.new("UIStroke")
+			chasingStroke.Color = Color3.fromRGB(255, 255, 255)
+			chasingStroke.Thickness = mobile and 1 or 2
+			chasingStroke.Parent = chasingTextLabel
+
+			local chasingIcon = Instance.new("ImageLabel")
+			chasingIcon.Size = UDim2.fromOffset(28, 30)
+			chasingIcon.BackgroundTransparency = 1
+			chasingIcon.Image = ""
+			chasingIcon.LayoutOrder = 1
+			chasingIcon.Visible = false
+			chasingIcon.Parent = chasingRow
+
+			local chasingYouLabel = Instance.new("TextLabel")
+			chasingYouLabel.Size = UDim2.fromOffset(30, 15)
+			chasingYouLabel.BackgroundTransparency = 1
+			chasingYouLabel.Text = "You!"
+			chasingYouLabel.Font = Enum.Font.FredokaOne
+			chasingYouLabel.TextSize = 13
+			chasingYouLabel.TextColor3 = espsettings.colors.twisted
+			chasingYouLabel.TextXAlignment = Enum.TextXAlignment.Left
+			chasingYouLabel.LayoutOrder = 2
+			chasingYouLabel.Visible = false
+			chasingYouLabel.Parent = chasingRow
+
+			local chasingYouStroke = Instance.new("UIStroke")
+			chasingYouStroke.Color = Color3.fromRGB(255, 255, 255)
+			chasingYouStroke.Thickness = mobile and 1 or 2
+			chasingYouStroke.Parent = chasingYouLabel
+
+			local chasingNobodyLabel = Instance.new("TextLabel")
+			chasingNobodyLabel.Size = UDim2.fromOffset(50, 15)
+			chasingNobodyLabel.BackgroundTransparency = 1
+			chasingNobodyLabel.Text = "Nobody"
+			chasingNobodyLabel.Font = Enum.Font.FredokaOne
+			chasingNobodyLabel.TextSize = 13
+			chasingNobodyLabel.TextColor3 = espsettings.colors.twisted
+			chasingNobodyLabel.TextXAlignment = Enum.TextXAlignment.Left
+			chasingNobodyLabel.LayoutOrder = 3
+			chasingNobodyLabel.Visible = true
+			chasingNobodyLabel.Parent = chasingRow
+
+			local chasingNobodyStroke = Instance.new("UIStroke")
+			chasingNobodyStroke.Color = Color3.fromRGB(255, 255, 255)
+			chasingNobodyStroke.Thickness = mobile and 1 or 2
+			chasingNobodyStroke.Parent = chasingNobodyLabel
+
 			local chasingVal = twisted:WaitForChild("ChasingValue", 5)
 
 			local function updateChasing()
 				local target = chasingVal and chasingVal.Value
-				chasingLabel.Text = "Chasing: " .. (target and target.Name or "Nobody")
+
+				chasingIcon.Visible = false
+				chasingYouLabel.Visible = false
+				chasingNobodyLabel.Visible = false
+
+				if not target then
+					chasingNobodyLabel.Visible = true
+					return
+				end
+
+				if target == game:GetService("Players").LocalPlayer then
+					chasingYouLabel.Visible = true
+				else
+					local icon = env.funcs.getstats("player", target.Character).icon
+					chasingIcon.Image = icon or ""
+					chasingIcon.Visible = true
+				end
 			end
-			if chasingVal then chasingVal.Changed:Connect(updateChasing) updateChasing() end
+
+			if chasingVal then
+				chasingVal.Changed:Connect(updateChasing)
+				updateChasing()
+			end
 
 			addSideText("LoS cooldown: 0", espsettings.colors.twisted)
 
@@ -991,12 +1080,62 @@ local function setuptwistedesp(state)
 			border1.Color = Color3.fromRGB(255, 255, 255)
 			border1.Thickness = mobile and 1 or 2
 			border1.Parent = modelName
+			
+			local rars = {
+				["BoxtenMonster"] = "Common",
+				["BrushaMonster"] = "Common",
+				["CosmoMonster"] = "Common",
+				["LooeyMonster"] = "Common",
+				["PoppyMonster"] = "Common",
+				["ShrimpoMonster"] = "Common",
+				["TishaMonster"] = "Common",
+				["YattaMonster"] = "Common",
+				["RibeccaMonster"] = "Common",
+				["RudieMonster"] = "Common",
+				["EggsonMonster"] = "Common",
+
+				["BrightneyMonster"] = "Uncommon",
+				["ConnieMonster"] = "Uncommon",
+				["FinnMonster"] = "Uncommon",
+				["RazzleDazzleMonster"] = "Uncommon",
+				["RodgerMonster"] = "Uncommon",
+				["TeaganMonster"] = "Uncommon",
+				["ToodlesMonster"] = "Uncommon",
+				["SoulvesterMonster"] = "Uncommon",
+				["GingerMonster"] = "Uncommon",
+				["FlyteMonster"] = "Uncommon",
+
+				["BlottMonster"] = "Rare",
+				["FlutterMonster"] = "Rare",
+				["GigiMonster"] = "Rare",
+				["GlistenMonster"] = "Rare",
+				["GoobMonster"] = "Rare",
+				["ScrapsMonster"] = "Rare",
+				["SquirmMonster"] = "Rare",
+				["EclipseMonster"] = "Rare",
+				["CoalMonster"] = "Rare",
+				["CocoaMonster"] = "Rare",
+
+				["AstroMonster"] = "Main",
+				["PebbleMonster"] = "Main",
+				["ShellyMonster"] = "Main",
+				["SproutMonster"] = "Main",
+				["VeeMonster"] = "Main",
+				["GourdyMonster"] = "Main",
+				["BobetteMonster"] = "Main",
+				["BassieMonster"] = "Main",
+
+				["DandyMonster"] = "Lethal",
+				["DyleMonster"] = "Lethal",
+			}
+
+			local rarity = rars[twisted.Name]
 
 			local rarityLabel = Instance.new("TextLabel")
 			rarityLabel.Size = UDim2.fromOffset(billboardWidth, 13)
 			rarityLabel.Position = UDim2.fromOffset(0, 19)
 			rarityLabel.BackgroundTransparency = 1
-			rarityLabel.Text = "RarityPlaceholder"
+			rarityLabel.Text = rarity or "Unknown rarity"
 			rarityLabel.Font = Enum.Font.FredokaOne
 			rarityLabel.TextSize = 13
 			rarityLabel.TextColor3 = espsettings.colors.twisted
