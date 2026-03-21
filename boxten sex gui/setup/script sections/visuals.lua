@@ -529,22 +529,27 @@ local function setupplayeresp(state)
 			icon.Parent = nameSection
 
 			local invSection = Instance.new("Frame")
-			invSection.Size = UDim2.fromOffset(billboardWidth, billboardHeight)
+			invSection.Size = UDim2.fromOffset((slotSize + gap) * 3 - gap, billboardHeight)
 			invSection.Position = UDim2.fromOffset(12, totalBillboardHeight - billboardHeight - 88)
 			invSection.BackgroundTransparency = 1
 			invSection.Parent = fullBillboard
 
-			local invPositions = {
-				UDim2.fromOffset(centerX + startX,                         centerY),
-				UDim2.fromOffset(centerX + startX + slotSize + gap,        centerY),
-				UDim2.fromOffset(centerX + startX + (slotSize + gap) * 2,  centerY),
-				UDim2.fromOffset(centerX + startX + (slotSize + gap) * 3,  centerY),
-			}
-			
-			local maxSlots = 3
+			local invLayout = Instance.new("UIListLayout")
+			invLayout.FillDirection = Enum.FillDirection.Horizontal
+			invLayout.Padding = UDim.new(0, gap)
+			invLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			invLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+			invLayout.Parent = invSection
 
+			local function updateInvWidth(count)
+				invSection.Size = UDim2.fromOffset((slotSize + gap) * count - gap, billboardHeight)
+			end
+
+			local maxSlots = 3
 			for i = 1, 4 do
-				local frame, img = bubble(invSection, invPositions[i], "")
+				local frame, img = bubble(invSection, UDim2.fromOffset(0, 0), "")
+				frame.LayoutOrder = i
+				if i == 4 then frame.Visible = false end
 				slots[i] = frame
 				slotImages[i] = img
 			end
@@ -566,6 +571,7 @@ local function setupplayeresp(state)
 					if i == 4 then
 						slots[4].Visible = true
 						maxSlots = 4
+						updateInvWidth(4)
 					end
 					updateSlot(i, slotValue.Value)
 					slotConns[i] = slotValue.Changed:Connect(function(newValue)
@@ -582,6 +588,7 @@ local function setupplayeresp(state)
 						if i == 4 then
 							slots[4].Visible = true
 							maxSlots = 4
+							updateInvWidth(4)
 						end
 						updateSlot(i, child.Value)
 						if slotConns[i] then slotConns[i]:Disconnect() end
@@ -595,6 +602,7 @@ local function setupplayeresp(state)
 					if child.Name == "Slot4" then
 						slots[4].Visible = false
 						maxSlots = 3
+						updateInvWidth(3)
 					end
 				end)
 			end
@@ -1110,7 +1118,7 @@ local function setuptwistedesp(state)
 			warningStroke.Parent = warningLabel
 
 			local function updateSpeed(runSpeed)
-				local playerSpeed = env.stuf.plrstats and env.stuf.plrstats.RunSpeedModifier or 0
+				local playerSpeed = env.stuf.plrstats and env.stuf.plrstats.RunSpeedModifier.Value or 0
 				speedLabel.Text = "Speed: " .. tostring(runSpeed)
 				warningLabel.Visible = runSpeed > playerSpeed
 			end
