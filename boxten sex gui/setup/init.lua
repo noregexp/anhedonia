@@ -738,12 +738,12 @@ do
 	end
 
 	env.stuf.skycatcher = Instance.new("Part")
-  	env.stuf.skycatcher.Size = Vector3.new(5000, 1, 5000)
-  	env.stuf.skycatcher.Position = Vector3.new(-747, 250, 95)
-  	env.stuf.skycatcher.Anchored = true
-  	env.stuf.skycatcher.BrickColor = BrickColor.new("Medium stone grey")
-  	env.stuf.skycatcher.Transparency = 0.5
-  	env.stuf.skycatcher.Parent = ws
+	env.stuf.skycatcher.Size = Vector3.new(5000, 1, 5000)
+	env.stuf.skycatcher.Position = Vector3.new(-747, 250, 95)
+	env.stuf.skycatcher.Anchored = true
+	env.stuf.skycatcher.BrickColor = BrickColor.new("Medium stone grey")
+	env.stuf.skycatcher.Transparency = 0.5
+	env.stuf.skycatcher.Parent = ws
 
 	-- ui
 	env.stuf.mainframe, env.stuf.mainframesections = nil
@@ -835,29 +835,29 @@ do
 	end
 
 	-- utility
-  local function sendwebhook(url, data) -- self explanatory
-    if not req then
-      return false
-    end
+	local function sendwebhook(url, data) -- self explanatory
+		if not req then
+			return false
+		end
 
-    local body = https:JSONEncode(data)
+		local body = https:JSONEncode(data)
 
-    local success, response = pcall(function()
-    return req({
-      Url = url,
-      Method = "POST",
-      Headers = {["Content-Type"] = "application/json"},
-      Body = body
-      })
-    end)
+		local success, response = pcall(function()
+			return req({
+				Url = url,
+				Method = "POST",
+				Headers = {["Content-Type"] = "application/json"},
+				Body = body
+			})
+		end)
 
-    if not success then
-      env.funcs.pop("Webhook failed:", response)
-      return false
-    end
+		if not success then
+			env.funcs.pop("Webhook failed:", response)
+			return false
+		end
 
-    return true, response
-  end
+		return true, response
+	end
 
 	function env.funcs.recursivels(link, frompath, atts) -- replaces loadstring, tries to load the link 3 times if unsuccessful
 		local atts = atts or 5
@@ -1062,11 +1062,11 @@ do
 		end
 	end
 
-  function env.funcs.floorunloading() -- returns true if the current floor is unloading
-    if env.funcs.getgamestats().message:find("Quickly") and not env.stuf.elevator:FindFirstChild("Opened").Value then
-      return true
-    end
-  end
+	function env.funcs.floorunloading() -- returns true if the current floor is unloading
+		if env.funcs.getgamestats().message:find("Quickly") and not env.stuf.elevator:FindFirstChild("Opened").Value then
+			return true
+		end
+	end
 
 	function env.funcs.getstats(type, obj, stat) -- returns a table full of the target objects stats, can fetch the floor, item, machine, twisted, and another players stats
 		if not obj:IsA("Model") then env.funcs.shr("INVALID OBJECT, IDIOT!!!") return end
@@ -1076,7 +1076,7 @@ do
 		local result
 
 		if type == "floor" then
-  		if env.funcs.floorunloading() then return end
+			if env.funcs.floorunloading() then return end
 
 			local floorname = env.stuf.currentroom.Name
 			local hasdialoguetriggers = obj:GetAttribute("HasDialogueTriggers")
@@ -1175,8 +1175,8 @@ do
 				hitcooldown = chaser:FindFirstChild("HitCooldown").Value
 			end
 
-			local chasing = obj:FindFirstChild("ChasingValue").Value
-			local ischasing = chasing and chasingf ~= nil
+			local chasing = obj:WaitForChild("ChasingValue").Value
+			local ischasing = chasing and chasing ~= nil
 
 			local hasability = obj:FindFirstChild("Grabbing") or nil
 			local usingability = hasability and hasability.Value
@@ -1498,19 +1498,19 @@ do
 	end
 
 	function env.funcs.toskycatcher(off, method) -- brings the player to a safe spot in the sky, off makes the player teleport to the skycatcher relative from their current position
-  		method = method or "tp"
-  		local basecf = env.stuf.skycatcher.CFrame
+		method = method or "tp"
+		local basecf = env.stuf.skycatcher.CFrame
 
-  		if env.stuf.root then
-    		if off then
-      			local relative = basecf:PointToObjectSpace(env.stuf.root.Position)
-      			local finaldestination = basecf:PointToWorldSpace(relative + off)
+		if env.stuf.root then
+			if off then
+				local relative = basecf:PointToObjectSpace(env.stuf.root.Position)
+				local finaldestination = basecf:PointToWorldSpace(relative + off)
 
-      			env.funcs.moveplr(CFrame.new(finaldestination + Vector3.new(0, 2.7, 0)), method)
-    		else
-      			env.funcs.moveplr(basecf * CFrame.new(0, 2.7, 0), method)
-    		end
-  		end
+				env.funcs.moveplr(CFrame.new(finaldestination + Vector3.new(0, 2.7, 0)), method)
+			else
+				env.funcs.moveplr(basecf * CFrame.new(0, 2.7, 0), method)
+			end
+		end
 	end
 
 	-- ui
